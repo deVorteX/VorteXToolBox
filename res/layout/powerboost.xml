@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:weightSum="1" android:layout_height="match_parent" android:layout_width="match_parent">
+
+    <TextView
+        android:id="@+id/tvPowerBoostTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/powerboost_title"
+        android:textAppearance="?android:attr/textAppearanceLarge" android:gravity="center"/>
+
+    <Button android:layout_width="match_parent" android:text="@string/pb_throttlebutton" android:textSize="12.0dp" android:textStyle="bold" android:id="@+id/btnPBThrottle" android:clickable="true" android:layout_height="wrap_content"></Button>
+    <Button android:layout_width="match_parent" android:text="@string/pb_modsbutton" android:textSize="12.0dp" android:textStyle="bold" android:id="@+id/btnPBMods" android:layout_height="wrap_content"></Button>
+
+    <Button
+        android:id="@+id/btnPBCWR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pb_cwrbutton" android:textSize="12.0dp" android:textStyle="bold"/>
+
+</LinearLayout>

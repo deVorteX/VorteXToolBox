@@ -1,0 +1,24 @@
+#!/system/bin/sh
+ 
+# Mount system partition read/write:
+busybox mount -o remount,rw /system
+
+# Zipalign system apps
+busybox mkdir -p /data/local/zipalign_apks
+for file in /system/app/*.apk; do
+	zipalign -c 4 $file
+	zipalignCheck=$?
+	case $zipalignCheck in
+		1)
+			zipalign -f 4 ${file} /data/local/zipalign_apks/$( busybox basename $file )
+			busybox cp -f /data/local/zipalign_apks/$( busybox basename $file ) /system/app/
+			busybox rm -f /data/local/zipalign_apks/$( busybox basename $file )
+		;;
+	esac
+done
+busybox rm -rf /data/local/zipalign_apks
+
+# Mount system partition read-only
+busybox mount -o remount,ro /system
+
+	

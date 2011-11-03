@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:weightSum="1" >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1" >
+
+        <RadioGroup
+            android:id="@+id/rgGovernors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/rbGovernorInteractive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/govinteractive_label" />
+
+            <RadioButton
+                android:id="@+id/rbGovernorPowerBoost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/govpowerboost_label" />
+
+            <RadioButton
+                android:id="@+id/rbGovernorOnDemand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/govondemand_label" />
+        </RadioGroup>
+
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="1">
+<Button
+        android:id="@+id/btnSaveGovernor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Selected Governor" />
+    </LinearLayout>
+
+    
+
+</LinearLayout>

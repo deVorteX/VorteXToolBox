@@ -1,0 +1,5 @@
+#!/system/bin/sh
+
+# redraw hack
+
+echo "ro.HOME_APP_ADJ=1" > /data/local.prop

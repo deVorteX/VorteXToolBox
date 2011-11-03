@@ -1,0 +1,5 @@
+#!/system/bin/sh
+
+# Recovery at boot
+busybox mount -o remount,rw /system
+busybox echo 1 > /data/.recovery_mode; sync;

@@ -1,0 +1,17 @@
+#!/system/bin/sh
+
+
+# enable modified Conservative governor by default
+busybox mount -o remount,rw /system
+busybox chmod 644 /system/lib/modules/cpufreq_conservative.ko
+insmod /system/lib/modules/symsearch.ko
+insmod /system/lib/modules/cpufreq_conservative.ko 
+busybox echo Powerboost > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+busybox echo 40 > /sys/devices/system/cpu/cpu0/cpufreq/conservative/down_threshold
+busybox echo 1 > /sys/devices/system/cpu/cpu0/cpufreq/conservative/ignore_nice_load
+busybox echo 160000 > /sys/devices/system/cpu/cpu0/cpufreq/conservative/sampling_rate
+busybox echo 16 > /sys/devices/system/cpu/cpu0/cpufreq/conservative/freq_step
+
+SAMPLING_RATE=$(busybox expr `cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency` \* 750 / 1000)
+echo 95 > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
+echo $SAMPLING_RATE > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate

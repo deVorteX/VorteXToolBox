@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VorteX ToolBox</string>
+    <string name="carrier_text">Change Carrier Text</string>
+    <string name="startup">Change Startup Options</string>
+    <string name="apps">Change default apps</string>
+    <string name="new_carriertext">Enter New Text</string>
+    <string name="save">Save</string>
+    <string name="reboot_notice">This action requires a reboot. Would you like to reboot now?</string>
+    <string name="cwr_notice">Your phone will now reboot into CWR to install the update!</string>
+    <string name="promp_root">Will now attempt to gain root access</string>
+    <string name="error_carriertext">Error Saving Carrier Text!</string>
+    <string name="error_stringlength16">Text Must be Under 16 Characters!</string>
+    <string name="battery_xmlurl">http://vortexrom.devortex.com/wp-content/uploads/2011/10/BatteryIcons.xml</string>
+    <string name="error_download">Download Failed, please try again later. Ensure your sdcard is available!</string>
+    <string name="eri_originaltext">VorteX Rom!     </string>
+    <string name="start_element">iconset</string>
+    <string name="download_attribute">downloadURL</string>
+    <string name="image_url_element">imageurl</string>
+    <string name="name_element">name</string>
+    <string name="powerboost">PowerBoost Options</string>
+    <string name="powerboost_title">PowerBoost Options by BMc08GT</string>
+    <string name="pb_throttlebutton">Throttle/Unthrottle</string>
+    <string name="pb_cwrbutton">CWR on Every Boot</string>
+    <string name="pb_conservativebutton">PowerBoost Conservative CPU Gov</string>
+    <string name="pb_modsbutton">MODS!!!!!</string>
+    <string name="pbmod_warning">This will disable any VorteX startup tweaks!</string>
+    <string name="vortexmod_warning">This will disable any PowerBoost startup tweaks!</string>
+    <string name="vortextweaks_togglelabel">VorteX Tweaks are:</string>
+    <string name="pbtweaks_togglelabel">PowerBoost Tweaks are:</string>
+    <string name="pbgov_script">01pbgov</string>
+    <string name="defaultgov_script">01gov</string>
+    <string name="enabledefault_gov_question">Would you like to enable the VorteX Interactive governor</string>
+    <string name="pbcwr_togglelabel">PowerBoost CWR on Boot is:</string>
+    <string name="pbgov_togglelabel">PowerBoost Governor is:</string>
+    <string name="pbcwr_script">08cwrboot</string>
+    <string name="vortexscript_description">This will enable the startup scripts that come pre-installed with the VorteX rom. \nThis includes: \n-Interactive Governor\n-Disable System Log\n-Increase Launcher Priority\n-Memory Tweaks\n-Enable Cron job to wipe cache\n-Zipalign System Apps</string>
+    <string name="pbscript_description">This will enable the startup scripts from PowerBoost by BMc08GT. \nThis includes: \n-Disable System Log\n-Memory Tweaks\n-Enable Cron job to wipe cache\n-Clear Battery Stats on Boot</string>
+    <string name="pbgov_description">This will enable the Conservative Governor from PowerBoost by BMc08GT.</string>
+    <string name="govinteractive_label">Interactive Governor(VorteX Default)</string>
+    <string name="govpowerboost_label">PowerBoost Conservative Governor</string>
+    <string name="govondemand_label">On-Demand Governor(DroidX Default)</string>
+    <string name="zipupdate_name">VorteXUpdater.zip</string>
+</resources>

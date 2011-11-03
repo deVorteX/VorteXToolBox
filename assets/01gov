@@ -1,0 +1,7 @@
+#!/system/bin/sh
+
+# enable interactiveX governor by default
+
+insmod /system/lib/modules/symsearch.ko
+insmod /system/lib/modules/cpufreq_interactive.ko
+echo interactive > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor

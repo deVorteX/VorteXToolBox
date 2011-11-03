@@ -1,0 +1,33 @@
+#!/system/bin/sh
+
+# enable crond
+
+mount -o remount,rw `grep /system /proc/mounts | cut -d' ' -f1` /system
+echo "root:x:0:0::/data/cron:/system/bin/sh" > /etc/passwd
+mount -o remount,ro `grep /system /proc/mounts | cut -d' ' -f1` /system
+# crond has "/bin/sh" hardcoded
+mount -o remount,rw rootfs /
+ln -s /system/bin/ /bin
+if [ ! -d /tmp ]; then
+  mkdir /tmp
+  mount -t tmpfs tmpfs /tmp
+fi
+
+ln -s /system/xbin /xbin
+mount -o remount,ro rootfs /
+
+timezone=$(date +%z)
+if [ $timezone = "0800" ]; then
+  TZ=PST8PDT
+elif [ $timezone = "-0700" ]; then
+  TZ=MST7MDT
+elif [ $timezone = "-0600" ]; then
+  TZ=CST6CDT
+elif [ $timezone = "-0500" ]; then
+  TZ=EST5EDT
+elif [ $timezone = "-0400" ]; then
+  TZ=EST5EDT
+else TZ=PST8PDT
+fi
+export TZ
+crond -c /data/cron

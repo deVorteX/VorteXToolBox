@@ -1,0 +1,30 @@
+
+    <resources>
+        <string-array name="services_jar_urls">
+            <item>http://vortexrom.devortex.com/wp-content/uploads/unThrottled1_services.jar</item>
+            <item>http://vortexrom.devortex.com/wp-content/uploads/Throttled1_services.jar</item>
+            <item>http://vortexrom.devortex.com/wp-content/uploads/unThrottled10_services.jar</item>
+            <item>http://vortexrom.devortex.com/wp-content/uploads/Throttled10_services.jar</item>
+        </string-array>
+        <string-array name="services_jar_options">
+            <item>Unthrottle on One Percent Battery</item>
+            <item>Throttle on One Percent Battery</item>
+            <item>Unthrottle on Ten Percent Battery</item>
+            <item>Throttle on Ten Percent Battery</item>
+        </string-array>
+        <string-array name="vortex_scripts">
+            <item>01gov</item>
+            <item>02logger</item>
+            <item>03redraws</item>
+            <item>04sysctl</item>
+            <item>05cron</item>
+            <item>07min</item>
+            <item>98zipalign</item>
+        </string-array>
+        <string-array name="powerboost_scripts">
+            <item>91battcalibration</item>
+            <item>02logger</item>
+            <item>04sysctl</item>
+            <item>05cron</item>
+        </string-array>
+    </resources>
