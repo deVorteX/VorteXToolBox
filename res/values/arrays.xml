@@ -22,7 +22,6 @@
             <item>98zipalign</item>
         </string-array>
         <string-array name="powerboost_scripts">
-            <item>91battcalibration</item>
             <item>02logger</item>
             <item>04sysctl</item>
             <item>05cron</item>

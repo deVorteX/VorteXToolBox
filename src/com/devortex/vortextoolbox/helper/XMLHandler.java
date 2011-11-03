@@ -16,10 +16,10 @@ public class XMLHandler extends DefaultHandler{
 	Boolean currentElement = false;
 	String currentValue = null;
 	private Context _context;
-	private String sStartElement = _context.getString(R.string.start_element);
-	private String sDownloadAttribute = _context.getString(R.string.download_attribute);
-	private String sImageUrlElement = _context.getString(R.string.image_url_element);
-	private String sNameElement = _context.getString(R.string.name_element);
+	private String sStartElement;
+	private String sDownloadAttribute;
+	private String sImageUrlElement;
+	private String sNameElement;
 	private ArrayList<IconsList> iconsListArray;
 	private IconsList iconsList;
 
@@ -28,6 +28,10 @@ public class XMLHandler extends DefaultHandler{
 		_context = context;
 		iconsList = new IconsList();
 		iconsListArray = new ArrayList<IconsList>();
+		sStartElement = _context.getString(R.string.start_element);
+		sDownloadAttribute = _context.getString(R.string.download_attribute);
+		sImageUrlElement = _context.getString(R.string.image_url_element);
+		sNameElement = _context.getString(R.string.name_element);
 	}
 	
 	public ArrayList<IconsList> getIconsList() {
