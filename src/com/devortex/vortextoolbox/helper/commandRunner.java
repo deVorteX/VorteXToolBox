@@ -356,4 +356,20 @@ public class commandRunner {
 		}
 		
 	}
+
+	public static void fixCWR(Context _context) {
+		Command cmd = new Command();
+		cmd.Add("rm -f /data/.recovery_mode");
+		cmd.Add("rm -f /system/etc/init.d/08cwrboot");
+		try {
+			runSuCommand(_context, cmd.get()).waitFor();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }

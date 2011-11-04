@@ -42,4 +42,5 @@
     <string name="govondemand_label">On-Demand Governor(DroidX Default)</string>
     <string name="zipupdate_name">VorteXUpdater.zip</string>
     <string name="calibrate_batt">Calibrate Battery</string>
+    <string name="fix_recovery">Do You Keep Booting into CWR?</string>
 </resources>

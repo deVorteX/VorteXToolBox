@@ -83,6 +83,7 @@ public class VorteXToolBox extends Activity {
         Button mStartupTweaks = (Button) findViewById(R.id.btnStartup);
         Button mPowerBoost = (Button) findViewById(R.id.btnPowerBoost);
         Button mCalibrateBatt = (Button) findViewById(R.id.btnCalibrateBatt);
+        Button mFixRecovery = (Button) findViewById(R.id.btnFixCWR);
         
      // Register handler for UI elements
         mChangeCarrierTextButton.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +123,11 @@ public class VorteXToolBox extends Activity {
 				calibrateBattery();
 			}
 		});
+        mFixRecovery.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View v) {
+        		fixCWR();
+        	}
+        });
     }
 	
 	protected void launchCarrierTextEdit()
@@ -152,6 +158,12 @@ public class VorteXToolBox extends Activity {
     	Toast toast = Toast.makeText(_context, "Battery Calibration Complete...", Toast.LENGTH_SHORT);
     	toast.show();
     }
+	protected void fixCWR()
+	{
+		commandRunner.fixCWR(_context);
+		Toast toast = Toast.makeText(_context, "Fixed Always booting to CWR", Toast.LENGTH_SHORT);
+		toast.show();
+	}
 	
 	protected void startHack() throws IOException, InterruptedException
 	{
