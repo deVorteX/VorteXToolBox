@@ -41,4 +41,5 @@
     <string name="govpowerboost_label">PowerBoost Conservative Governor</string>
     <string name="govondemand_label">On-Demand Governor(DroidX Default)</string>
     <string name="zipupdate_name">VorteXUpdater.zip</string>
+    <string name="calibrate_batt">Calibrate Battery</string>
 </resources>

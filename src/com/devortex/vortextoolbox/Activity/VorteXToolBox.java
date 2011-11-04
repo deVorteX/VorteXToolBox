@@ -2,7 +2,6 @@ package com.devortex.vortextoolbox.Activity;
 
 import java.io.IOException;
 import android.app.Activity;
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +10,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.devortex.vortextoolbox.*;
 import com.devortex.vortextoolbox.helper.*;
@@ -19,27 +19,60 @@ import com.koushikdutta.rommanager.api.IROMManagerAPIService;
 public class VorteXToolBox extends Activity {
 	private Context _context = VorteXToolBox.this;
     public static IROMManagerAPIService mService = null;
+    boolean mBound = false;
+    Intent RomManagerIntent = null;
     
     public static IROMManagerAPIService getService()
     {
     	return mService;
     }
     
+    public ServiceConnection mConnection = new ServiceConnection() {
+    	public void onServiceDisconnected(ComponentName className) {
+    		mBound = false;
+    	}
+    	public void onServiceConnected(ComponentName name, IBinder service) {
+    		mService = IROMManagerAPIService.Stub.asInterface(service);
+    		mBound = true;
+    	}
+    };
+    
+    @Override
+    protected void onStart() {
+    	super.onStart();
+    	RomManagerIntent = new Intent("com.koushikdutta.rommanager.api.BIND");
+    	bindService(RomManagerIntent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+    
+    @Override
+    protected void onPause() {
+    	super.onPause();
+    	if (mBound) {
+    		unbindService(mConnection);
+    		mBound = false;
+    	}
+    }
+    
+    @Override
+    protected void onStop() {
+    	super.onStop();
+    	if (mBound) {
+    		unbindService(mConnection);
+    		mBound = false;
+    	}
+    }
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	if (!mBound) {
+    		bindService(RomManagerIntent, mConnection, Context.BIND_AUTO_CREATE);
+    		mBound = true;
+    	}
+    }
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
-		Intent i = new Intent("com.koushikdutta.rommanager.api.BIND");
-		try {
-			bindService(i, new ServiceConnection() {
-				public void onServiceDisconnected(ComponentName name){
-					
-				}
-				public void onServiceConnected(ComponentName name, IBinder service) {
-					mService = IROMManagerAPIService.Stub.asInterface(service);
-				}								
-			}, Service.BIND_AUTO_CREATE);
-		}
-		catch (Exception e) {}
-		
 		Assests.unzipAssets(_context);
 		
         super.onCreate(savedInstanceState);
@@ -49,6 +82,7 @@ public class VorteXToolBox extends Activity {
         Button mOnePercentButton = (Button) findViewById(R.id.btnBatteryIcons);
         Button mStartupTweaks = (Button) findViewById(R.id.btnStartup);
         Button mPowerBoost = (Button) findViewById(R.id.btnPowerBoost);
+        Button mCalibrateBatt = (Button) findViewById(R.id.btnCalibrateBatt);
         
      // Register handler for UI elements
         mChangeCarrierTextButton.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +116,12 @@ public class VorteXToolBox extends Activity {
 				launchPowerBoostActivity();
 			}
 		});
+        mCalibrateBatt.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				calibrateBattery();
+			}
+		});
     }
 	
 	protected void launchCarrierTextEdit()
@@ -104,6 +144,13 @@ public class VorteXToolBox extends Activity {
     {
     	Intent i = new Intent(this, PowerBoost.class);
         startActivity(i);
+    }
+	
+	protected void calibrateBattery()
+    {
+    	commandRunner.calibrateBattery(_context);
+    	Toast toast = Toast.makeText(_context, "Battery Calibration Complete...", Toast.LENGTH_SHORT);
+    	toast.show();
     }
 	
 	protected void startHack() throws IOException, InterruptedException

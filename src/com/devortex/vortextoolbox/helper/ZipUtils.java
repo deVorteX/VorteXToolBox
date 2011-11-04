@@ -6,15 +6,25 @@ import java.util.zip.*;
 
 import org.apache.commons.io.IOUtils;
 
+import android.content.Context;
+
 public class ZipUtils {
-	final static int BUFFER = 2048;
+	final static int BUFFER = 1024;
 	
-	public static void Zip(File workingDir, File ZipFile) throws IOException
+	public static void Zip(Context context, File workingDir, File ZipFile)
 	{
-		ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(ZipFile)));
-		addDir(workingDir, out, workingDir.getAbsolutePath());
-		out.flush();
-		out.close();
+		Command cmd = new Command();
+		cmd.Add("cd " + workingDir.getAbsolutePath());
+		cmd.Add("zip -r -q " + ZipFile.getAbsolutePath() + " *");
+		try {
+			commandRunner.runSuCommand(context, cmd.get()).waitFor();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void addDir(File dirObj, ZipOutputStream out, String workingDir) throws IOException
@@ -72,7 +82,7 @@ public class ZipUtils {
         }
         
         is = new BufferedInputStream(zipfile.getInputStream(entry));
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(workingDir + "/" + entry.getName()));
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(workingDir + "/" + entry.getName()), BUFFER);
         try {
         	IOUtils.copy(is, bos);
         } finally {

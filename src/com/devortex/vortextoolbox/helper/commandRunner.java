@@ -45,7 +45,7 @@ public class commandRunner {
 		File eri = new File(context.getFilesDir().getAbsolutePath(), "eri.xml");
 		File workingDir = new File(context.getFilesDir().getAbsolutePath() + "/tmp");
 		File workingZipDir = new File(context.getFilesDir().getAbsolutePath() + "/tmp2");
-		File workingZipDirFramework = new File(context.getFilesDir().getAbsolutePath() + "/tmp2/system/framework");
+		File workingZipDirFramework = new File(workingZipDir + "/system/framework");
 		if (!workingDir.exists())
 		{
 			workingDir.mkdirs();
@@ -69,6 +69,7 @@ public class commandRunner {
 		carrierLabel = String.format("%-16s", carrierLabel);
 		
 		ZipUtils.UnZip(workingDir, "/system/framework/framework-res.apk");
+		File outFramework = new File(workingZipDirFramework, "framework-res.apk");
 		
 		File workingEriDir = new File(workingDir.getAbsolutePath() + "/res/xml");
 		
@@ -82,21 +83,20 @@ public class commandRunner {
 		
 		runSuCommand(context, cmd.get());
 		
-		File outFramework = new File(workingZipDirFramework, "framework-res.apk");
-		
-		String zipfile = context.getFilesDir().getAbsolutePath() + "/VorteXUpdater.zip";
+		File zipfile = new File(context.getFilesDir(), context.getString(R.string.zipupdate_name));
 		File sdPath = new File(Environment.getExternalStorageDirectory() + "/" + context.getString(R.string.app_name).replace(' ', '_') + "Downloads");
 		if (!sdPath.exists())
 			sdPath.mkdirs();
 		
-		File outZip = new File(sdPath.getAbsolutePath() + "/" + context.getString(R.string.zipupdate_name));
-		outZip.delete();
+		File finalZip = new File(sdPath, context.getString(R.string.zipupdate_name));
+		finalZip.delete();
+		IOUtils.copy(new FileInputStream(zipfile), new FileOutputStream(finalZip));
 		
-		ZipUtils.UnZip(workingZipDir, zipfile);
+		ZipUtils.UnZip(workingZipDir, zipfile.getAbsolutePath());
 		
-		ZipUtils.Zip(workingDir, outFramework);
+		ZipUtils.Zip(context, workingDir, outFramework);
 		
-		ZipUtils.Zip(workingZipDir, outZip);
+		ZipUtils.Zip(context, workingZipDir, finalZip);
 		
 		DeleteRecursive(workingDir);
 		DeleteRecursive(workingZipDir);
@@ -110,6 +110,9 @@ public class commandRunner {
 			sdPath.mkdirs();
 		
 		File outZip = new File(sdPath.getAbsolutePath() + "/" + context.getString(R.string.zipupdate_name));
+		outZip.delete();
+		IOUtils.copy(new FileInputStream(zipfile), new FileOutputStream(outZip));
+		
 		File workingDir = new File(context.getFilesDir().getAbsolutePath() + "/tmp");
 		if (!workingDir.exists())
 		{
@@ -120,14 +123,13 @@ public class commandRunner {
 			DeleteRecursive(workingDir);
 			workingDir.mkdirs();
 		}
-		ZipUtils.UnZip(workingDir, zipfile);
 		File frameworkDir = new File(workingDir, "system/framework/");
 		if (!frameworkDir.exists())
 			frameworkDir.mkdirs();
 		FileInputStream fis = new FileInputStream(fileName);
 		FileOutputStream fos = new FileOutputStream(frameworkDir + "/services.jar");
 		IOUtils.copy(fis, fos);
-		ZipUtils.Zip(workingDir, outZip);
+		ZipUtils.Zip(context, workingDir, outZip);
 		
 		DeleteRecursive(workingDir);
 	}
@@ -156,11 +158,18 @@ public class commandRunner {
 			workingZipDirFramework.mkdirs();
 		}
 		
-		ZipUtils.UnZip(workingDir, "/system/framework/framework-res.apk");
-		
 		ZipUtils.UnZip(workingDir, fileName);
 		
+		File inServices = new File(workingDir, "services.jar");
+		File outServices = new File(workingZipDirFramework, "services.jar");
+		
+		IOUtils.copy(new FileInputStream(workingDir.getAbsolutePath() + "/services.jar"), new FileOutputStream(outServices));
+		
+		inServices.delete();
+		
 		File outFramework = new File(workingZipDirFramework, "framework-res.apk");
+		
+		IOUtils.copy(new FileInputStream("/system/framework/framework-res.apk"), new FileOutputStream(outFramework));
 		
 		String zipfile = context.getFilesDir().getAbsolutePath() + "/VorteXUpdater.zip";
 		File sdPath = new File(Environment.getExternalStorageDirectory() + "/" + context.getString(R.string.app_name).replace(' ', '_') + "Downloads");
@@ -172,41 +181,12 @@ public class commandRunner {
 		
 		ZipUtils.UnZip(workingZipDir, zipfile);
 		
-		ZipUtils.Zip(workingDir, outFramework);
+		ZipUtils.Zip(context, workingDir, outFramework);
 		
-		ZipUtils.Zip(workingZipDir, outZip);
+		ZipUtils.Zip(context, workingZipDir, outZip);
 		
 		DeleteRecursive(workingDir);
 		DeleteRecursive(workingZipDir);
-
-		//		Command command = new Command();
-//		
-//		String hackRoot = "/data/local/tmp";
-//		String hackDir = hackRoot + "/hack";
-//		String backupDir = Environment.getExternalStorageDirectory() + "/vortexDownloads";
-//		File frameworkBackupfolder = new File(backupDir + "/bFramework-res");
-//		if (!frameworkBackupfolder.exists())
-//		{
-//			frameworkBackupfolder.mkdir();
-//		}
-//		File servicesBakupfolder = new File(backupDir + "/bServicesJar");
-//		if (!servicesBakupfolder.exists())
-//		{
-//			servicesBakupfolder.mkdir();
-//		}
-//		
-//		command.Add("$BB mkdir -p " + hackDir);
-//		command.Add("cd " + hackDir);
-//		command.Add("unzip -q " + fileName + " -d " + hackDir);
-//		command.Add("$BB cp -f /system/framework/framework-res.apk " + backupDir + "/bFramework-res/");
-//		command.Add("$BB cp -f /system/framework/services.jar " + backupDir + "/bServicesJar/");
-//		command.Add("$BB cp -f " + hackDir + "/services.jar /system/framework/");
-//		command.Add("chmod 644 /system/framework/services.jar");
-//		command.Add("BB rm " + hackDir + "/services.jar");
-//		command.Add("zip -r -q /system/framework/framework-res.apk *");
-//		command.Add("$BB rm -R " + hackRoot);
-//		command.Add("$BB rm " + fileName);	
-//		return runSuCommand(context, command.get()).waitFor();
 	}
 	
 	public static void enableTweaks(Context context, String[] tweaks) throws InterruptedException, IOException
@@ -361,4 +341,19 @@ public class commandRunner {
  	   AlertDialog alert = builder.create();
  	   alert.show();
     }
+
+	public static void calibrateBattery(Context _context) {
+		Command cmd = new Command();
+		cmd.Add("rm -f /data/system/batterystats.bin");
+		try {
+			runSuCommand(_context, cmd.get()).waitFor();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }
