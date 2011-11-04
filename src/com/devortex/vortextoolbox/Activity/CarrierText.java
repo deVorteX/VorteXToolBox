@@ -72,7 +72,7 @@ public class CarrierText extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			pd.dismiss();
-//			commandRunner.cwrDialog(_context);
+			commandRunner.cwrDialog(_context);
 		}
 	};
 }
