@@ -4,4 +4,5 @@
 
 insmod /system/lib/modules/symsearch.ko
 insmod /system/lib/modules/cpufreq_interactive.ko
+insmod /system/lib/modules/cpufreq_conservative.ko 
 echo interactive > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor

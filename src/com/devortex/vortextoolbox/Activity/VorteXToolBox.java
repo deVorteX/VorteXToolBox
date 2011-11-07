@@ -84,6 +84,7 @@ public class VorteXToolBox extends Activity {
         Button mPowerBoost = (Button) findViewById(R.id.btnPowerBoost);
         Button mCalibrateBatt = (Button) findViewById(R.id.btnCalibrateBatt);
         Button mFixRecovery = (Button) findViewById(R.id.btnFixCWR);
+        Button mSetGovernor = (Button) findViewById(R.id.btnSetGov);
         
      // Register handler for UI elements
         mChangeCarrierTextButton.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +129,11 @@ public class VorteXToolBox extends Activity {
         		fixCWR();
         	}
         });
+        mSetGovernor.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				launchSetGovernorActivity();				
+			}
+		});
     }
 	
 	protected void launchCarrierTextEdit()
@@ -149,6 +155,12 @@ public class VorteXToolBox extends Activity {
 	protected void launchPowerBoostActivity()
     {
     	Intent i = new Intent(this, PowerBoost.class);
+        startActivity(i);
+    }
+	
+	protected void launchSetGovernorActivity()
+    {
+    	Intent i = new Intent(this, Governors.class);
         startActivity(i);
     }
 	

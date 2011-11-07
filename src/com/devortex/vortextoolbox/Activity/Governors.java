@@ -1,7 +1,8 @@
 package com.devortex.vortextoolbox.Activity;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import com.devortex.vortextoolbox.R;
 import com.devortex.vortextoolbox.helper.commandRunner;
@@ -60,19 +61,28 @@ public class Governors extends Activity{
 	
 	protected void SetInnitialChoice()
 	{
-		String pbFile = getString(R.string.pbgov_script);
-		String vFile = getString(R.string.defaultgov_script);
-        File pbGov = new File("/system/etc/init.d/" + pbFile);
-        File vGov = new File("/system/etc/init.d/" + vFile);
-        if (pbGov.exists())
-        {
+		Process proc = null;
+		String line = null;
+		try {
+			proc = Runtime.getRuntime().exec("cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor");
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+		try {
+			line = in.readLine();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		
+		if (line.equalsIgnoreCase("conservative"))
         	((RadioButton) findViewById(R.id.rbGovernorPowerBoost)).setChecked(true);
-        }
-        else if (vGov.exists())
-        {
+		else if (line.equalsIgnoreCase("interactive"))
         	((RadioButton) findViewById(R.id.rbGovernorInteractive)).setChecked(true);
-        }
-        else
+		else
         	((RadioButton) findViewById(R.id.rbGovernorOnDemand)).setChecked(true);
 	}
 }

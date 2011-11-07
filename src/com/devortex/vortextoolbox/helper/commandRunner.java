@@ -230,6 +230,16 @@ public class commandRunner {
 		command.Add("$BB cp -f " + _filesDir + "/symsearch.ko /system/lib/modules/");
 		command.Add("$BB chmod -R 555 /system/etc/init.d/");
 		command.Add("$BB chmod -R 644 /system/lib/modules/");
+		command.Add("insmod /system/lib/modules/symsearch.ko");
+		command.Add("insmod /system/lib/modules/cpufreq_conservative.ko");
+		command.Add("echo conservative > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor");
+		command.Add("$BB echo 40 > /sys/devices/system/cpu/cpu0/cpufreq/conservative/down_threshold");
+		command.Add("$BB echo 1 > /sys/devices/system/cpu/cpu0/cpufreq/conservative/ignore_nice_load");
+		command.Add("$BB echo 160000 > /sys/devices/system/cpu/cpu0/cpufreq/conservative/sampling_rate");
+		command.Add("$BB echo 16 > /sys/devices/system/cpu/cpu0/cpufreq/conservative/freq_step");
+		command.Add("SAMPLING_RATE=$($BB expr `cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency` \\* 750 / 1000)");
+		command.Add("echo 95 > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold");
+		command.Add("echo $SAMPLING_RATE > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate");
 		runSuCommand(context, command.get()).waitFor();
 	}
 	
@@ -244,6 +254,9 @@ public class commandRunner {
 		command.Add("$BB cp -f " + _filesDir + "/symsearch.ko /system/lib/modules/");
 		command.Add("$BB chmod -R 555 /system/etc/init.d/");
 		command.Add("$BB chmod -R 644 /system/lib/modules/");
+		command.Add("insmod /system/lib/modules/symsearch.ko");
+		command.Add("insmod /system/lib/modules/cpufreq_interactive.ko");
+		command.Add("echo interactive > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor");
 		runSuCommand(context, command.get()).waitFor();
 	}
 	

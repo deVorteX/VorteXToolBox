@@ -11,6 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/powerboost" android:textSize="12.0dp" android:textStyle="bold"/>
+    
+    <Button
+        android:id="@+id/btnSetGov"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/setgov" android:textSize="12.0dp" android:textStyle="bold"/>
 
     <Button
         android:id="@+id/btnCalibrateBatt"

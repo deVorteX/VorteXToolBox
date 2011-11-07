@@ -21,15 +21,16 @@ public final class R {
     }
     public static final class id {
         public static final int btnBatteryIcons=0x7f06000b;
-        public static final int btnCalibrateBatt=0x7f06000d;
+        public static final int btnCalibrateBatt=0x7f06000e;
         public static final int btnCarrierText=0x7f060009;
-        public static final int btnFixCWR=0x7f06000e;
-        public static final int btnPBCWR=0x7f060012;
-        public static final int btnPBMods=0x7f060011;
-        public static final int btnPBThrottle=0x7f060010;
+        public static final int btnFixCWR=0x7f06000f;
+        public static final int btnPBCWR=0x7f060013;
+        public static final int btnPBMods=0x7f060012;
+        public static final int btnPBThrottle=0x7f060011;
         public static final int btnPowerBoost=0x7f06000c;
         public static final int btnSaveCarrierText=0x7f060003;
         public static final int btnSaveGovernor=0x7f060008;
+        public static final int btnSetGov=0x7f06000d;
         public static final int btnStartup=0x7f06000a;
         public static final int rbGovernorInteractive=0x7f060005;
         public static final int rbGovernorOnDemand=0x7f060007;
@@ -37,10 +38,10 @@ public final class R {
         public static final int rgGovernors=0x7f060004;
         public static final int textView1=0x7f060000;
         public static final int textView2=0x7f060001;
-        public static final int toggleButton1=0x7f060014;
-        public static final int tvDescription=0x7f060015;
-        public static final int tvPowerBoostTitle=0x7f06000f;
-        public static final int tvScripts=0x7f060013;
+        public static final int toggleButton1=0x7f060015;
+        public static final int tvDescription=0x7f060016;
+        public static final int tvPowerBoostTitle=0x7f060010;
+        public static final int tvScripts=0x7f060014;
         public static final int txtCarrierText=0x7f060002;
     }
     public static final class layout {
@@ -88,6 +89,7 @@ public final class R {
         public static final int promp_root=0x7f050008;
         public static final int reboot_notice=0x7f050006;
         public static final int save=0x7f050005;
+        public static final int setgov=0x7f05002b;
         public static final int start_element=0x7f05000e;
         public static final int startup=0x7f050002;
         public static final int vortexmod_warning=0x7f050019;
