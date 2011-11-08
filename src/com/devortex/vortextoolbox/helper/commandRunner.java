@@ -316,6 +316,8 @@ public class commandRunner {
 					((Activity)context).finish();
 				}
 			});
+		AlertDialog alert = builder.create();
+	 	alert.show();
 	}
 	
 	public static void doCWRStuff(Context context, String updateZipPath)
