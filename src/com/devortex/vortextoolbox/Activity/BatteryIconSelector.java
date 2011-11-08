@@ -44,6 +44,9 @@ public class BatteryIconSelector extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        if (!commandRunner.isSdPresent())
+        	commandRunner.warnNoSD(_context);
+        
         sv = new ScrollView(this);
         ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);

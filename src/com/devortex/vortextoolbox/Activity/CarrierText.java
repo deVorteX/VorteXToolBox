@@ -24,6 +24,10 @@ public class CarrierText extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        if (!commandRunner.isSdPresent())
+        	commandRunner.warnNoSD(_context);
+        
         setContentView(R.layout.carriertext);
         
         Button mSaveCarrierTextButton = (Button) findViewById(R.id.btnSaveCarrierText);

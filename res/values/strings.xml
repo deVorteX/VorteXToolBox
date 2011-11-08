@@ -44,4 +44,5 @@
     <string name="calibrate_batt">Calibrate Battery</string>
     <string name="fix_recovery">Do You Keep Booting into CWR?</string>
     <string name="setgov">Set CPU Governor</string>
+    <string name="nosd_warning">You must have your SDCard Mounted to continue!</string>
 </resources>

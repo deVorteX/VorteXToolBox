@@ -72,6 +72,7 @@ public final class R {
         public static final int image_url_element=0x7f050010;
         public static final int name_element=0x7f050011;
         public static final int new_carriertext=0x7f050004;
+        public static final int nosd_warning=0x7f05002c;
         public static final int pb_conservativebutton=0x7f050016;
         public static final int pb_cwrbutton=0x7f050015;
         public static final int pb_modsbutton=0x7f050017;
