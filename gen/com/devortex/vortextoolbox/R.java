@@ -9,7 +9,6 @@ package com.devortex.vortextoolbox;
 
 public final class R {
     public static final class array {
-        public static final int powerboost_scripts=0x7f040003;
         public static final int services_jar_options=0x7f040001;
         public static final int services_jar_urls=0x7f040000;
         public static final int vortex_scripts=0x7f040002;
@@ -24,8 +23,8 @@ public final class R {
         public static final int btnCalibrateBatt=0x7f06000e;
         public static final int btnCarrierText=0x7f060009;
         public static final int btnFixCWR=0x7f06000f;
+        public static final int btnGovernors=0x7f060012;
         public static final int btnPBCWR=0x7f060013;
-        public static final int btnPBMods=0x7f060012;
         public static final int btnPBThrottle=0x7f060011;
         public static final int btnPowerBoost=0x7f06000c;
         public static final int btnSaveCarrierText=0x7f060003;

@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -18,19 +16,8 @@ import com.devortex.vortextoolbox.helper.*;
 
 public class StartupScript extends Activity{
 	private Context _context = StartupScript.this;
-	private boolean _continue = false;
 	private ToggleButton mStartupToggle;
 	
-	private void setContinue(boolean value)
-	{
-		_continue = value;
-	}
-	
-	private boolean getContinue()
-	{
-		return _continue;
-	}
-
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		
@@ -63,59 +50,33 @@ public class StartupScript extends Activity{
 	}
 	
 	protected boolean doSwitchTweaks(boolean checked) {
-		setContinue(true);
+		String[] vortexScripts = getResources().getStringArray(R.array.vortex_scripts);
 		if (checked)
 		{
-			 AlertDialog.Builder builder = new AlertDialog.Builder(_context);
-		 	 builder.setMessage(getString(R.string.vortexmod_warning) + "\nAre you sure you want to continue?")
-		 	        .setCancelable(false)
-		 	        .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-		 	            public void onClick(DialogInterface dialog, int id) {
-		 	            	setContinue(true);
-		 	            }
-		 	        })
-		 	        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-		 	            public void onClick(DialogInterface dialog, int id) {
-		 	          	  	setContinue(false);
-		 	            }
-		 	        });
-		 	AlertDialog alert = builder.create();
-		 	alert.show();
+			
+			try {
+				commandRunner.enableTweaks(_context, vortexScripts);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
-	 	if (getContinue())
-	 	{
-			String[] vortexScripts = getResources().getStringArray(R.array.vortex_scripts);
-			String[] pbScripts = getResources().getStringArray(R.array.powerboost_scripts);
-			if (checked)
-			{
-				
-				try {
-					commandRunner.disableTweaks(_context, pbScripts);
-					commandRunner.enableTweaks(_context, vortexScripts);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		else
+		{
+			try {
+				commandRunner.disableTweaks(_context, vortexScripts);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			else
-			{
-				try {
-					commandRunner.disableTweaks(_context, vortexScripts);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			return true;
-	 	}
-	 	return false;
+		}
+		return true;
 	}
 
 	protected void SetInnitialToggle()

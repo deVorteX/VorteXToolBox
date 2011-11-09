@@ -11,7 +11,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" android:gravity="center"/>
 
     <Button android:layout_width="match_parent" android:text="@string/pb_throttlebutton" android:textSize="12.0dp" android:textStyle="bold" android:id="@+id/btnPBThrottle" android:clickable="true" android:layout_height="wrap_content"></Button>
-    <Button android:layout_width="match_parent" android:text="@string/pb_modsbutton" android:textSize="12.0dp" android:textStyle="bold" android:id="@+id/btnPBMods" android:layout_height="wrap_content"></Button>
+    <Button android:layout_width="match_parent" android:text="@string/setgov" android:textSize="12.0dp" android:textStyle="bold" android:id="@+id/btnGovernors" android:layout_height="wrap_content"></Button>
 
     <Button
         android:id="@+id/btnPBCWR"

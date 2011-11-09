@@ -14,14 +14,14 @@ public class PowerBoost extends Activity{
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.powerboost);
         
-        Button mPBScript = (Button) findViewById(R.id.btnPBMods);
+        Button mGovernors = (Button) findViewById(R.id.btnGovernors);
         Button mPBCWR = (Button) findViewById(R.id.btnPBCWR);
         Button mPBThrottle = (Button) findViewById(R.id.btnPBThrottle);
         
-        mPBScript.setOnClickListener(new View.OnClickListener() {
+        mGovernors.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				startPBScriptActivity();				
+				startGovernorsActivity();				
 			}
 		});
         
@@ -40,9 +40,9 @@ public class PowerBoost extends Activity{
 		});
 	}
 	
-	public void startPBScriptActivity()
+	public void startGovernorsActivity()
 	{
-		Intent i = new Intent(this, PowerBoostScript.class);
+		Intent i = new Intent(this, Governors.class);
 		startActivity(i);
 	}
 	

@@ -26,7 +26,6 @@
         <activity android:name=".Activity.StartupScript"></activity>
         <activity android:name=".Activity.BatteryIconSelector">
         </activity>
-        <activity android:name=".Activity.PowerBoostScript"></activity>
         <activity android:name=".Activity.PowerBoost"></activity>
         <activity android:name=".Activity.Governors"></activity>
         <activity android:name=".Activity.PowerBoostCWR"></activity>

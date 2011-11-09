@@ -1,0 +1,12 @@
+#!/system/bin/sh
+
+# replace adb
+
+if test -e /system/etc/adbd; then
+	busybox mount -orw,remount / 
+	busybox mv -f /sbin/adbd /sdbin/abdb.old
+	busybox cp /system/etc/adbd /sbin/adbd 
+	chmod 755 /sbin/adbd
+	busybox mount -oro,remount / 
+	busybox kill $(ps | busybox grep adbd)
+fi
