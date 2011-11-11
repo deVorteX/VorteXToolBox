@@ -46,4 +46,10 @@
     <string name="setgov">Set CPU Governor</string>
     <string name="nosd_warning">You must have your SDCard Mounted to continue!</string>
     <string name="pbcwr_description">This will enable clockwork recovery on every bootup.</string>
+    <string name="governor_set">Your governor choice has been set and is now active. Enjoy!</string>
+    <string name="appinstallauto_label">Auto</string>
+    <string name="appinstallinternal_label">Internal</string>
+    <string name="appinstallsd_label">SDCard</string>
+    <string name="appinstall_set">Application Install Location Saved!</string>
+    <string name="install_location">Set App Install Location</string>
 </resources>

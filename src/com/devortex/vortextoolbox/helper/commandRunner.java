@@ -412,4 +412,18 @@ public class commandRunner {
 		return android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
 
 		}
+
+	public static void setInstallLocation(Context _context, String location) {
+		Command cmd = new Command();
+		cmd.Add("pm setInstallLocation " + location);
+		try {
+			runSuCommand(_context, cmd.get()).waitFor();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

@@ -8,7 +8,9 @@ import com.devortex.vortextoolbox.R;
 import com.devortex.vortextoolbox.helper.commandRunner;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -56,6 +58,18 @@ public class Governors extends Activity{
 		}
 		else
 			commandRunner.disableGovernors(_context);
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(_context);
+		builder.setMessage(R.string.governor_set)
+			.setCancelable(false)
+			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					((Activity)_context).finish();
+				}
+			});
+		AlertDialog alert = builder.create();
+	 	alert.show();
 			
 	}
 	

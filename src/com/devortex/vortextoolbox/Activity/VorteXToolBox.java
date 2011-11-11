@@ -85,6 +85,7 @@ public class VorteXToolBox extends Activity {
         Button mCalibrateBatt = (Button) findViewById(R.id.btnCalibrateBatt);
         Button mFixRecovery = (Button) findViewById(R.id.btnFixCWR);
         Button mSetGovernor = (Button) findViewById(R.id.btnSetGov);
+        Button mSetInstallLocation = (Button) findViewById(R.id.btnInstallLocation);
         
      // Register handler for UI elements
         mChangeCarrierTextButton.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +135,11 @@ public class VorteXToolBox extends Activity {
 				launchSetGovernorActivity();				
 			}
 		});
+        mSetInstallLocation.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				launchSetInstallLocationActivity();
+			}
+		});
     }
 	
 	protected void launchCarrierTextEdit()
@@ -163,6 +169,12 @@ public class VorteXToolBox extends Activity {
     	Intent i = new Intent(this, Governors.class);
         startActivity(i);
     }
+	
+	protected void launchSetInstallLocationActivity()
+	{
+		Intent i = new Intent(this, AppInstallLocation.class);
+		startActivity(i);
+	}
 	
 	protected void calibrateBattery()
     {

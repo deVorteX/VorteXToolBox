@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:weightSum="1" >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1" >
+
+        <RadioGroup
+            android:id="@+id/rgGovernors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/rbAppInstallAuto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/appinstallauto_label" />
+
+            <RadioButton
+                android:id="@+id/rbAppInstallInternal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/appinstallinternal_label" />
+
+            <RadioButton
+                android:id="@+id/rbAppInstallSD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/appinstallsd_label" />
+        </RadioGroup>
+
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="1">
+<Button
+        android:id="@+id/btnSaveAppInstall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Selection" />
+    </LinearLayout>
+
+    
+
+</LinearLayout>

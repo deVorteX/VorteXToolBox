@@ -19,6 +19,12 @@
         android:text="@string/setgov" android:textSize="12.0dp" android:textStyle="bold"/>
 
     <Button
+        android:id="@+id/btnInstallLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/install_location" android:textSize="12.0dp" android:textStyle="bold"/>
+    
+    <Button
         android:id="@+id/btnCalibrateBatt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
