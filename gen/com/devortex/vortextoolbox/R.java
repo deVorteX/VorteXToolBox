@@ -76,6 +76,7 @@ public final class R {
         public static final int pb_cwrbutton=0x7f050015;
         public static final int pb_modsbutton=0x7f050017;
         public static final int pb_throttlebutton=0x7f050014;
+        public static final int pbcwr_description=0x7f05002d;
         public static final int pbcwr_script=0x7f050021;
         public static final int pbcwr_togglelabel=0x7f05001f;
         public static final int pbgov_description=0x7f050024;

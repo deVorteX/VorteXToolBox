@@ -25,7 +25,9 @@ public class PowerBoostCWR extends Activity{
         setContentView(R.layout.startuptweaks);
         
         TextView tvToggleLabel = (TextView) findViewById(R.id.tvScripts);
-        tvToggleLabel.setText(getString(R.string.vortextweaks_togglelabel));
+        tvToggleLabel.setText(getString(R.string.pbcwr_togglelabel));
+        TextView tvDescription = (TextView) findViewById(R.id.tvDescription);
+        tvDescription.setText(getString(R.string.pbcwr_description));
         mStartupToggle = (ToggleButton) findViewById(R.id.toggleButton1);
         
         SetInnitialToggle();

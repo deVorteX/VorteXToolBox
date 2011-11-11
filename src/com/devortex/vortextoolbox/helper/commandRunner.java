@@ -229,7 +229,9 @@ public class commandRunner {
 		command.Add("$BB cp -f " + _filesDir + "/cpufreq_conservative.ko /system/lib/modules/");
 		command.Add("$BB cp -f " + _filesDir + "/symsearch.ko /system/lib/modules/");
 		command.Add("$BB chmod -R 555 /system/etc/init.d/");
-		command.Add("$BB chmod -R 644 /system/lib/modules/");
+		command.Add("chmod 644 /system/lib/modules/cpufreq_interactive.ko");
+		command.Add("chmod 644 /system/lib/modules/cpufreq_conservative.ko");
+		command.Add("chmod 644 /system/lib/modules/symsearch.ko");
 		command.Add("insmod /system/lib/modules/symsearch.ko");
 		command.Add("insmod /system/lib/modules/cpufreq_conservative.ko");
 		command.Add("echo conservative > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor");
@@ -253,7 +255,9 @@ public class commandRunner {
 		command.Add("$BB cp -f " + _filesDir + "/cpufreq_conservative.ko /system/lib/modules/");
 		command.Add("$BB cp -f " + _filesDir + "/symsearch.ko /system/lib/modules/");
 		command.Add("$BB chmod -R 555 /system/etc/init.d/");
-		command.Add("$BB chmod -R 644 /system/lib/modules/");
+		command.Add("chmod 644 /system/lib/modules/cpufreq_interactive.ko");
+		command.Add("chmod 644 /system/lib/modules/cpufreq_conservative.ko");
+		command.Add("chmod 644 /system/lib/modules/symsearch.ko");
 		command.Add("insmod /system/lib/modules/symsearch.ko");
 		command.Add("insmod /system/lib/modules/cpufreq_interactive.ko");
 		command.Add("echo interactive > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor");
