@@ -19,14 +19,15 @@ public final class R {
         public static final int icon=0x7f020000;
     }
     public static final class id {
+        public static final int adView=0x7f060015;
         public static final int btnBatteryIcons=0x7f06000f;
         public static final int btnCalibrateBatt=0x7f060013;
         public static final int btnCarrierText=0x7f06000d;
         public static final int btnFixCWR=0x7f060014;
-        public static final int btnGovernors=0x7f060017;
+        public static final int btnGovernors=0x7f060018;
         public static final int btnInstallLocation=0x7f060012;
-        public static final int btnPBCWR=0x7f060018;
-        public static final int btnPBThrottle=0x7f060016;
+        public static final int btnPBCWR=0x7f060019;
+        public static final int btnPBThrottle=0x7f060017;
         public static final int btnPowerBoost=0x7f060010;
         public static final int btnSaveAppInstall=0x7f060004;
         public static final int btnSaveCarrierText=0x7f060008;
@@ -42,10 +43,10 @@ public final class R {
         public static final int rgGovernors=0x7f060000;
         public static final int textView1=0x7f060005;
         public static final int textView2=0x7f060006;
-        public static final int toggleButton1=0x7f06001a;
-        public static final int tvDescription=0x7f06001b;
-        public static final int tvPowerBoostTitle=0x7f060015;
-        public static final int tvScripts=0x7f060019;
+        public static final int toggleButton1=0x7f06001b;
+        public static final int tvDescription=0x7f06001c;
+        public static final int tvPowerBoostTitle=0x7f060016;
+        public static final int tvScripts=0x7f06001a;
         public static final int txtCarrierText=0x7f060007;
     }
     public static final class layout {

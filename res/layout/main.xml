@@ -1,39 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:orientation="vertical"
     android:weightSum="1" android:layout_height="match_parent" android:layout_width="match_parent">
-    <Button android:layout_width="match_parent" android:text="@string/carrier_text" android:textSize="12.0dp" android:textStyle="bold" android:id="@+id/btnCarrierText" android:clickable="true" android:layout_height="wrap_content"></Button>
-    <Button android:layout_width="match_parent" android:text="@string/startup" android:textSize="12.0dp" android:textStyle="bold" android:id="@+id/btnStartup" android:layout_height="wrap_content"></Button>
-    <Button android:layout_height="wrap_content" android:layout_width="match_parent" android:textSize="12.0dp" android:id="@+id/btnBatteryIcons" android:text="Change Battery Icons" android:textStyle="bold"></Button>
-
-    <Button
-        android:id="@+id/btnPowerBoost"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/powerboost" android:textSize="12.0dp" android:textStyle="bold"/>
+    <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content">
+    	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    	android:orientation="vertical"
+    	android:weightSum="1" android:layout_height="match_parent" android:layout_width="match_parent">
+	    <Button android:layout_width="match_parent" android:text="@string/carrier_text" android:textSize="12.0dp" android:textStyle="bold" android:id="@+id/btnCarrierText" android:clickable="true" android:layout_height="wrap_content"></Button>
+	    <Button android:layout_width="match_parent" android:text="@string/startup" android:textSize="12.0dp" android:textStyle="bold" android:id="@+id/btnStartup" android:layout_height="wrap_content"></Button>
+	    <Button android:layout_height="wrap_content" android:layout_width="match_parent" android:textSize="12.0dp" android:id="@+id/btnBatteryIcons" android:text="Change Battery Icons" android:textStyle="bold"></Button>
+	
+	    <Button
+	        android:id="@+id/btnPowerBoost"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/powerboost" android:textSize="12.0dp" android:textStyle="bold"/>
+	    
+	    <Button
+	        android:id="@+id/btnSetGov"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/setgov" android:textSize="12.0dp" android:textStyle="bold"/>
+	
+	    <Button
+	        android:id="@+id/btnInstallLocation"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/install_location" android:textSize="12.0dp" android:textStyle="bold"/>
+	    
+	    <Button
+	        android:id="@+id/btnCalibrateBatt"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/calibrate_batt" android:textSize="12.0dp" android:textStyle="bold"/>
+	    
+	    <Button
+	        android:id="@+id/btnFixCWR"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/fix_recovery" android:textSize="12.0dp" android:textStyle="bold"/>
+    </LinearLayout>
+    </ScrollView>
     
-    <Button
-        android:id="@+id/btnSetGov"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/setgov" android:textSize="12.0dp" android:textStyle="bold"/>
+    <com.google.ads.AdView android:id="@+id/adView"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         ads:adUnitId="a14ebd66bc8c512"
+                         ads:adSize="BANNER"
+                         ads:loadAdOnCreate="true"
+                         android:layout_alignParentBottom="true"/>
 
-    <Button
-        android:id="@+id/btnInstallLocation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/install_location" android:textSize="12.0dp" android:textStyle="bold"/>
-    
-    <Button
-        android:id="@+id/btnCalibrateBatt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/calibrate_batt" android:textSize="12.0dp" android:textStyle="bold"/>
-    
-    <Button
-        android:id="@+id/btnFixCWR"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/fix_recovery" android:textSize="12.0dp" android:textStyle="bold"/>
-
-</LinearLayout>
+</RelativeLayout>
