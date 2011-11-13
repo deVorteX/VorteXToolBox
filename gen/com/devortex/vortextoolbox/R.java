@@ -75,6 +75,7 @@ public final class R {
         public static final int error_carriertext=0x7f050009;
         public static final int error_download=0x7f05000c;
         public static final int error_stringlength16=0x7f05000a;
+        public static final int expected_model=0x7f050035;
         public static final int fix_recovery=0x7f05002a;
         public static final int governor_set=0x7f05002e;
         public static final int govinteractive_label=0x7f050025;
@@ -82,8 +83,10 @@ public final class R {
         public static final int govpowerboost_label=0x7f050026;
         public static final int image_url_element=0x7f050010;
         public static final int install_location=0x7f050033;
+        public static final int model_mismatch=0x7f050034;
         public static final int name_element=0x7f050011;
         public static final int new_carriertext=0x7f050004;
+        public static final int norommanagercwr_notice=0x7f050036;
         public static final int nosd_warning=0x7f05002c;
         public static final int pb_conservativebutton=0x7f050016;
         public static final int pb_cwrbutton=0x7f050015;

@@ -1,10 +1,12 @@
 package com.devortex.vortextoolbox.helper;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import org.apache.commons.io.IOUtils;
 
@@ -298,8 +300,9 @@ public class commandRunner {
 	{
 		String updateZip = "/" + context.getString(R.string.app_name).replace(' ', '_') + "Downloads/" + context.getString(R.string.zipupdate_name);
 		final String updateZipPath = Environment.getExternalStorageDirectory() + updateZip;
-		
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		if (((Activity)context).getSharedPreferences(VorteXToolBox.PREF_FILE_NAME, Context.MODE_PRIVATE).getBoolean(VorteXToolBox.PREF_CWR_INSTALLED, true))
+		{		
 	 	   builder.setMessage(R.string.cwr_notice)
 	 	          .setCancelable(false)
 	 	          .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -307,8 +310,20 @@ public class commandRunner {
 	 	                   doCWRStuff(context, updateZipPath);
 	 	              }
 	 	          });
-	 	   AlertDialog alert = builder.create();
-	 	   alert.show();
+		}
+		else
+		{
+			builder.setMessage(String.format(context.getString(R.string.norommanagercwr_notice), updateZipPath))
+	          .setCancelable(false)
+	          .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	              public void onClick(DialogInterface dialog, int id) {
+	                   
+	              }
+	          });
+		}
+		
+		AlertDialog alert = builder.create();
+	 	alert.show();
 	}
 	
 	public static void warnNoSD(final Context context)
@@ -425,5 +440,26 @@ public class commandRunner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static String retrieveSingleCommandLineReturnLine(String command)
+	{
+		Process proc = null;
+		String line = null;
+		try {
+			proc = Runtime.getRuntime().exec(command);
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+		try {
+			line = in.readLine();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		return line;
 	}
 }

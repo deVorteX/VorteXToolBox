@@ -1,11 +1,15 @@
 package com.devortex.vortextoolbox.Activity;
 
+import java.io.File;
 import java.io.IOException;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
@@ -17,6 +21,9 @@ import com.devortex.vortextoolbox.helper.*;
 import com.koushikdutta.rommanager.api.IROMManagerAPIService;
 
 public class VorteXToolBox extends Activity {
+	public static final String PREF_FILE_NAME = "vortextoolbox";
+	public static final String PREF_SHOW_MODEL_WARNING = "showDeviceWarning";
+	public static final String PREF_CWR_INSTALLED = "rommanagerInstalled";
 	private Context _context = VorteXToolBox.this;
     public static IROMManagerAPIService mService = null;
     boolean mBound = false;
@@ -73,6 +80,8 @@ public class VorteXToolBox extends Activity {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	doPreChecks();
+    	
 		Assests.unzipAssets(_context);
 		
         super.onCreate(savedInstanceState);
@@ -198,6 +207,152 @@ public class VorteXToolBox extends Activity {
 			catch (Exception e){
 				e.printStackTrace();
 			}
+	}
+	
+	protected void doPreChecks()
+	{
+		checkDeviceModel();
+    	checkRomManager();
+	}
+
+	private void checkDeviceModel() {
+		if (this.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE).getBoolean(PREF_SHOW_MODEL_WARNING, true))
+		{
+			String DeviceModel = android.os.Build.MODEL;
+			if (DeviceModel != getString(R.string.expected_model))
+			{
+				AlertDialog.Builder builder = new AlertDialog.Builder(_context);
+			 	   builder.setMessage(R.string.model_mismatch)
+			 	          .setCancelable(false)
+			 	          .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			 	              public void onClick(DialogInterface dialog, int id) {
+			 	                   
+			 	              }
+			 	          });
+			 	   AlertDialog alert = builder.create();
+			 	   alert.show();
+			}			
+	    	Editor e = this.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE).edit();
+	    	e.putBoolean(PREF_SHOW_MODEL_WARNING, false);
+	    	e.commit();
+		}
+	}
+	
+	private void checkRomManager()
+	{
+		File rmRoot = new File("/data/data/com.koushikdutta.rommanager");
+		File rmFileDir = new File(rmRoot.getAbsolutePath() + "/files");
+		File rmScriptFile = new File(rmFileDir.getAbsolutePath() + "/rommanager.sh");
+		File rmExtendedFile = new File(rmFileDir.getAbsolutePath() + "/extendedcommand");
+		Editor e = null;
+		Toast toast = null;
+		if (!rmRoot.exists())
+		{
+			e = this.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE).edit();
+			e.putBoolean(PREF_CWR_INSTALLED, false);
+			e.commit();
+			toast = Toast.makeText(_context, "Rom Manager not found, switching to manual mode", Toast.LENGTH_LONG);
+			toast.show();
+			return;
+		}
+		
+		String cmd = "ls -l /data/data/ | grep \"com.koushikdutta.rommanager\" | cut -d ' ' -f3";
+		String uid = commandRunner.retrieveSingleCommandLineReturnLine(cmd);
+		String cmdMakeFileDir = "mkdir " + rmFileDir.getAbsolutePath();
+		String cmdSetFolderPerms = "chown " + uid + "." + uid + " " + rmFileDir.getAbsolutePath() + "; $BB chmod 771 " + rmFileDir.getAbsolutePath();
+		String cmdMoveFiles = "cp " + _context.getFilesDir() + "/rommanager.sh " + rmScriptFile.getAbsolutePath() + "; cp " + _context.getFilesDir() + "/extendedcommand " + rmExtendedFile.getAbsolutePath() + "; " +
+				"chmod 660 " + rmFileDir.getAbsolutePath() + "/*";
+		Command suCommand = new Command();
+		toast = Toast.makeText(_context, "Rom Manager Permissions Fixed", Toast.LENGTH_LONG);
+		if (!rmFileDir.exists())
+		{
+			suCommand.Add(cmdMakeFileDir);
+			suCommand.Add(cmdSetFolderPerms);
+			suCommand.Add(cmdMoveFiles);
+			try {
+				commandRunner.runSuCommand(_context, suCommand.get()).waitFor();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			toast.show();
+			return;
+		}
+		cmd = "ls -l " + rmRoot.getAbsolutePath() + " | grep \"files\"" + " | cut -d ' ' -f1";
+		String filePermissions = commandRunner.retrieveSingleCommandLineReturnLine(cmd);
+		cmd = "ls -l " + rmRoot.getAbsolutePath() + " | grep \"files\"" + " | cut -d ' ' -f3";
+		String fileUid = commandRunner.retrieveSingleCommandLineReturnLine(cmd);
+		if (filePermissions != "drwxrwx--x" || uid != fileUid)
+		{
+			suCommand.Add(cmdSetFolderPerms);
+			try {
+				commandRunner.runSuCommand(_context, suCommand.get()).waitFor();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			toast.show();
+			return;
+		}
+		cmd = "ls -l " + rmScriptFile.getAbsolutePath() + " | cut -d ' ' -f1";
+		String cmd2 = "ls -l " + rmExtendedFile.getAbsolutePath() + " | cut -d ' ' -f1";
+		String cmd3 = "ls -l " + rmScriptFile.getAbsolutePath() + " | cut -d ' ' -f3";
+		String cmd4 = "ls -l " + rmExtendedFile.getAbsolutePath() + " | cut -d ' ' -f3";
+		if (rmScriptFile.exists() && rmExtendedFile.exists())
+		{
+			if (uid != commandRunner.retrieveSingleCommandLineReturnLine(cmd3) || uid != commandRunner.retrieveSingleCommandLineReturnLine(cmd4))
+			{
+				suCommand.Add(cmdMoveFiles);
+				try {
+					commandRunner.runSuCommand(_context, suCommand.get()).waitFor();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				toast.show();
+				return;
+			}
+			else if (commandRunner.retrieveSingleCommandLineReturnLine(cmd) != "-rw-rw----" || commandRunner.retrieveSingleCommandLineReturnLine(cmd2) != "-rw-rw----")
+			{
+				suCommand.Add(cmdMoveFiles);
+				try {
+					commandRunner.runSuCommand(_context, suCommand.get()).waitFor();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				toast.show();
+				return;
+			}
+		}
+		else
+		{
+			suCommand.Add(cmdMoveFiles);
+			try {
+				commandRunner.runSuCommand(_context, suCommand.get()).waitFor();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			toast.show();
+			return;
+		}
+		
 	}
 
 }

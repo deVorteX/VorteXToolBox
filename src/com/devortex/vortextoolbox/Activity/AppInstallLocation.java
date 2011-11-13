@@ -13,16 +13,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 
-public class Governors extends Activity{
-	private Context _context = Governors.this;
+public class AppInstallLocation extends Activity{
+	private Context _context = AppInstallLocation.this;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.governors);
+        setContentView(R.layout.appinstalllocation);
         
-        Button bSetGov = (Button) findViewById(R.id.btnSaveGovernor);
+        Button bSetGov = (Button) findViewById(R.id.btnSaveAppInstall);
         
         SetInnitialChoice();
         
@@ -30,7 +30,7 @@ public class Governors extends Activity{
 			
 			public void onClick(View v) {
 				try {
-					setGov();
+					setAppInstallLocation();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -43,21 +43,21 @@ public class Governors extends Activity{
          
 	}
 	
-	protected void setGov() throws InterruptedException, IOException
+	protected void setAppInstallLocation() throws InterruptedException, IOException
 	{
-		if (((RadioButton) findViewById(R.id.rbGovernorPowerBoost)).isChecked())
+		if (((RadioButton) findViewById(R.id.rbAppInstallAuto)).isChecked())
 		{
-			commandRunner.enablePBGovernor(_context);
+			commandRunner.setInstallLocation(_context, "0");
 		}
-		else if (((RadioButton) findViewById(R.id.rbGovernorInteractive)).isChecked())
+		else if (((RadioButton) findViewById(R.id.rbAppInstallInternal)).isChecked())
 		{
-			commandRunner.enableInteractiveGovernor(_context);
+			commandRunner.setInstallLocation(_context, "1");
 		}
 		else
-			commandRunner.disableGovernors(_context);
+			commandRunner.setInstallLocation(_context, "2");
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(_context);
-		builder.setMessage(R.string.governor_set)
+		builder.setMessage(R.string.appinstall_set)
 			.setCancelable(false)
 			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 				
@@ -72,13 +72,13 @@ public class Governors extends Activity{
 	
 	protected void SetInnitialChoice()
 	{
-		String line = commandRunner.retrieveSingleCommandLineReturnLine("command");
-		
-		if (line.equalsIgnoreCase("conservative"))
-        	((RadioButton) findViewById(R.id.rbGovernorPowerBoost)).setChecked(true);
-		else if (line.equalsIgnoreCase("interactive"))
-        	((RadioButton) findViewById(R.id.rbGovernorInteractive)).setChecked(true);
+		String line = commandRunner.retrieveSingleCommandLineReturnLine("pm getInstallLocation");
+				
+		if (line.equalsIgnoreCase("1[internal]"))
+        	((RadioButton) findViewById(R.id.rbAppInstallInternal)).setChecked(true);
+		else if (line.equalsIgnoreCase("0[auto]"))
+        	((RadioButton) findViewById(R.id.rbAppInstallAuto)).setChecked(true);
 		else
-        	((RadioButton) findViewById(R.id.rbGovernorOnDemand)).setChecked(true);
+        	((RadioButton) findViewById(R.id.rbAppInstallSD)).setChecked(true);
 	}
 }

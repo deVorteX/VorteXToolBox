@@ -52,4 +52,7 @@
     <string name="appinstallsd_label">SDCard</string>
     <string name="appinstall_set">Application Install Location Saved!</string>
     <string name="install_location">Set App Install Location</string>
+    <string name="model_mismatch">Your device does not appear to be a Droid X. This application has only been tested on the Droid X. Please procede with caution!</string>
+    <string name="expected_model">DROIDX</string>
+    <string name="norommanagercwr_notice">You now need to reboot to cwr and flash the zip located at %s to see your changes.</string>
 </resources>
