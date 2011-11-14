@@ -11,7 +11,13 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.RemoteException;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -25,6 +31,8 @@ public class VorteXToolBox extends Activity {
 	public static final String PREF_SHOW_MODEL_WARNING = "showDeviceWarning";
 	public static final String PREF_CWR_INSTALLED = "rommanagerInstalled";
 	private Context _context = VorteXToolBox.this;
+	private static enum rmMessage { NOROMMANAGER, NOCWRSET, ROMMANAGEROK };
+	private static boolean _rmAlreadyWarned = false;
     public static IROMManagerAPIService mService = null;
     boolean mBound = false;
     Intent RomManagerIntent = null;
@@ -41,14 +49,17 @@ public class VorteXToolBox extends Activity {
     	public void onServiceConnected(ComponentName name, IBinder service) {
     		mService = IROMManagerAPIService.Stub.asInterface(service);
     		mBound = true;
+        	doPreChecks();
     	}
     };
     
     @Override
     protected void onStart() {
     	super.onStart();
-    	RomManagerIntent = new Intent("com.koushikdutta.rommanager.api.BIND");
-    	bindService(RomManagerIntent, mConnection, Context.BIND_AUTO_CREATE);
+    	if (!mBound)
+    	{
+		    bindService(RomManagerIntent, mConnection, Context.BIND_AUTO_CREATE);
+    	}
     }
     
     @Override
@@ -67,6 +78,7 @@ public class VorteXToolBox extends Activity {
     		unbindService(mConnection);
     		mBound = false;
     	}
+    	_rmAlreadyWarned = false;
     }
     
     @Override
@@ -79,12 +91,34 @@ public class VorteXToolBox extends Activity {
     }
     
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.main_menu, menu);
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+    	case R.id.restart_toolbox:
+    		_rmAlreadyWarned = false;
+    		startActivity(getIntent());
+    		finish();
+    		return true;
+    	default:
+    		return super.onOptionsItemSelected(item);
+    	}
+    }
+    
+    @Override
     public void onCreate(Bundle savedInstanceState) {
-    	doPreChecks();
+    	super.onCreate(savedInstanceState);
     	
-		Assests.unzipAssets(_context);
-		
-        super.onCreate(savedInstanceState);
+    	RomManagerIntent = new Intent("com.koushikdutta.rommanager.api.BIND");
+	    bindService(RomManagerIntent, mConnection, Context.BIND_AUTO_CREATE);
+	    
+    	Assests.unzipAssets(_context);
+		        
         setContentView(R.layout.main);
         
         Button mChangeCarrierTextButton = (Button) findViewById(R.id.btnCarrierText);
@@ -187,9 +221,24 @@ public class VorteXToolBox extends Activity {
 	
 	protected void calibrateBattery()
     {
-    	commandRunner.calibrateBattery(_context);
-    	Toast toast = Toast.makeText(_context, "Battery Calibration Complete...", Toast.LENGTH_SHORT);
-    	toast.show();
+		String batteryPercent = commandRunner.retrieveSingleCommandLineReturnLine("cat /sys/class/power_supply/battery/charge_counter");
+		AlertDialog.Builder builder = new AlertDialog.Builder(_context);
+ 	   	builder.setMessage(String.format(getString(R.string.calibrate_battery_notice), batteryPercent))
+ 	          	.setCancelable(false)
+ 	          	.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+ 	          		public void onClick(DialogInterface dialog, int id) {
+ 	          			commandRunner.calibrateBattery(_context);
+ 	          	    	Toast toast = Toast.makeText(_context, "Battery Calibration Complete...", Toast.LENGTH_SHORT);
+ 	          	    	toast.show();
+ 	          		}
+ 	          	})
+ 	          	.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+ 	          		public void onClick(DialogInterface dialog, int id) {
+ 	          			
+ 	          		}
+ 	          	});
+ 	   	AlertDialog alert = builder.create();
+ 	   	alert.show();
     }
 	protected void fixCWR()
 	{
@@ -211,15 +260,74 @@ public class VorteXToolBox extends Activity {
 	
 	protected void doPreChecks()
 	{
-		checkDeviceModel();
-    	checkRomManager();
+		Thread thread = new Thread() {
+			public void run() {
+				checkDeviceModel();
+		    	preCheckHandler.sendMessage(checkRomManager());
+			}
+		};
+		thread.start();
 	}
+	
+	static rmMessage[] messages = rmMessage.values();
+	
+	private Handler preCheckHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Toast toast = null;
+			switch(messages[msg.what]) { 
+			case NOROMMANAGER:
+				Editor e = ((Activity)_context).getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE).edit();
+				e.putBoolean(PREF_CWR_INSTALLED, false);
+				e.commit();
+				toast = Toast.makeText(_context, "Rom Manager not found, switching to manual mode", Toast.LENGTH_LONG);
+				toast.show();
+				break;
+			case NOCWRSET:
+				if (!_rmAlreadyWarned)
+				{
+					AlertDialog.Builder builder = new AlertDialog.Builder(_context);
+			 	   	builder.setMessage(R.string.nocwr_dialog)
+			 	          	.setCancelable(false)
+			 	          	.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			 	          		public void onClick(DialogInterface dialog, int id) {
+			 	                   Intent i = new Intent(Intent.ACTION_MAIN);
+			 	                   i.setComponent(new ComponentName("com.koushikdutta.rommanager", "com.koushikdutta.rommanager.RomManager"));
+			 	                   startActivity(i);
+			 	          		}
+			 	          	})
+			 	          	.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			 	          		public void onClick(DialogInterface dialog, int id) {
+			 	          			Editor e = ((Activity)_context).getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE).edit();
+			 	          			e.putBoolean(PREF_CWR_INSTALLED, false);
+			 	          			e.commit();
+			 	          			Toast toast = Toast.makeText(_context, "Rom Manager not found, switching to manual mode", Toast.LENGTH_LONG);
+			 	          			toast.show();
+			 	          		}
+			 	          	});
+			 	   	AlertDialog alert = builder.create();
+			 	   	alert.show();
+			 	   	_rmAlreadyWarned = true;
+				}
+				else
+				{
+					toast = Toast.makeText(_context, "Rom Manager not found, switching to manual mode", Toast.LENGTH_LONG);
+	          		toast.show();
+				}
+				break;
+			default:
+				toast = Toast.makeText(_context, "Rom Manager Checks Out OK!", Toast.LENGTH_LONG);
+				toast.show();
+				break;
+			}
+		}
+	};
 
 	private void checkDeviceModel() {
 		if (this.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE).getBoolean(PREF_SHOW_MODEL_WARNING, true))
 		{
 			String DeviceModel = android.os.Build.MODEL;
-			if (DeviceModel != getString(R.string.expected_model))
+			if (!DeviceModel.equals(getString(R.string.expected_model)))
 			{
 				AlertDialog.Builder builder = new AlertDialog.Builder(_context);
 			 	   builder.setMessage(R.string.model_mismatch)
@@ -238,120 +346,35 @@ public class VorteXToolBox extends Activity {
 		}
 	}
 	
-	private void checkRomManager()
+	private Message checkRomManager()
 	{
+		Message rmCheckMessage = new Message();
+		
 		File rmRoot = new File("/data/data/com.koushikdutta.rommanager");
-		File rmFileDir = new File(rmRoot.getAbsolutePath() + "/files");
-		File rmScriptFile = new File(rmFileDir.getAbsolutePath() + "/rommanager.sh");
-		File rmExtendedFile = new File(rmFileDir.getAbsolutePath() + "/extendedcommand");
-		Editor e = null;
-		Toast toast = null;
+		
 		if (!rmRoot.exists())
 		{
-			e = this.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE).edit();
-			e.putBoolean(PREF_CWR_INSTALLED, false);
-			e.commit();
-			toast = Toast.makeText(_context, "Rom Manager not found, switching to manual mode", Toast.LENGTH_LONG);
-			toast.show();
-			return;
+			rmCheckMessage.what = rmMessage.NOROMMANAGER.ordinal();
+			return rmCheckMessage;
 		}
 		
-		String cmd = "ls -l /data/data/ | grep \"com.koushikdutta.rommanager\" | cut -d ' ' -f3";
-		String uid = commandRunner.retrieveSingleCommandLineReturnLine(cmd);
-		String cmdMakeFileDir = "mkdir " + rmFileDir.getAbsolutePath();
-		String cmdSetFolderPerms = "chown " + uid + "." + uid + " " + rmFileDir.getAbsolutePath() + "; $BB chmod 771 " + rmFileDir.getAbsolutePath();
-		String cmdMoveFiles = "cp " + _context.getFilesDir() + "/rommanager.sh " + rmScriptFile.getAbsolutePath() + "; cp " + _context.getFilesDir() + "/extendedcommand " + rmExtendedFile.getAbsolutePath() + "; " +
-				"chmod 660 " + rmFileDir.getAbsolutePath() + "/*";
-		Command suCommand = new Command();
-		toast = Toast.makeText(_context, "Rom Manager Permissions Fixed", Toast.LENGTH_LONG);
-		if (!rmFileDir.exists())
-		{
-			suCommand.Add(cmdMakeFileDir);
-			suCommand.Add(cmdSetFolderPerms);
-			suCommand.Add(cmdMoveFiles);
-			try {
-				commandRunner.runSuCommand(_context, suCommand.get()).waitFor();
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			toast.show();
-			return;
+
+		String cwrVersion = null;
+		
+		try {
+			cwrVersion = mService.getClockworkModRecoveryVersion();
+		} catch (RemoteException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
 		}
-		cmd = "ls -l " + rmRoot.getAbsolutePath() + " | grep \"files\"" + " | cut -d ' ' -f1";
-		String filePermissions = commandRunner.retrieveSingleCommandLineReturnLine(cmd);
-		cmd = "ls -l " + rmRoot.getAbsolutePath() + " | grep \"files\"" + " | cut -d ' ' -f3";
-		String fileUid = commandRunner.retrieveSingleCommandLineReturnLine(cmd);
-		if (filePermissions != "drwxrwx--x" || uid != fileUid)
+		if (cwrVersion == null)
 		{
-			suCommand.Add(cmdSetFolderPerms);
-			try {
-				commandRunner.runSuCommand(_context, suCommand.get()).waitFor();
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			toast.show();
-			return;
+			rmCheckMessage.what = rmMessage.NOCWRSET.ordinal();
+			return rmCheckMessage;
 		}
-		cmd = "ls -l " + rmScriptFile.getAbsolutePath() + " | cut -d ' ' -f1";
-		String cmd2 = "ls -l " + rmExtendedFile.getAbsolutePath() + " | cut -d ' ' -f1";
-		String cmd3 = "ls -l " + rmScriptFile.getAbsolutePath() + " | cut -d ' ' -f3";
-		String cmd4 = "ls -l " + rmExtendedFile.getAbsolutePath() + " | cut -d ' ' -f3";
-		if (rmScriptFile.exists() && rmExtendedFile.exists())
-		{
-			if (uid != commandRunner.retrieveSingleCommandLineReturnLine(cmd3) || uid != commandRunner.retrieveSingleCommandLineReturnLine(cmd4))
-			{
-				suCommand.Add(cmdMoveFiles);
-				try {
-					commandRunner.runSuCommand(_context, suCommand.get()).waitFor();
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				toast.show();
-				return;
-			}
-			else if (commandRunner.retrieveSingleCommandLineReturnLine(cmd) != "-rw-rw----" || commandRunner.retrieveSingleCommandLineReturnLine(cmd2) != "-rw-rw----")
-			{
-				suCommand.Add(cmdMoveFiles);
-				try {
-					commandRunner.runSuCommand(_context, suCommand.get()).waitFor();
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				toast.show();
-				return;
-			}
-		}
-		else
-		{
-			suCommand.Add(cmdMoveFiles);
-			try {
-				commandRunner.runSuCommand(_context, suCommand.get()).waitFor();
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			toast.show();
-			return;
-		}
+		
+		rmCheckMessage.what = rmMessage.ROMMANAGEROK.ordinal();
+		return rmCheckMessage;
 		
 	}
 

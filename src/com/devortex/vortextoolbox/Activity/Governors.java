@@ -18,7 +18,6 @@ public class Governors extends Activity{
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-		
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.governors);
         
@@ -72,7 +71,7 @@ public class Governors extends Activity{
 	
 	protected void SetInnitialChoice()
 	{
-		String line = commandRunner.retrieveSingleCommandLineReturnLine("command");
+		String line = commandRunner.retrieveSingleCommandLineReturnLine("cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor");
 		
 		if (line.equalsIgnoreCase("conservative"))
         	((RadioButton) findViewById(R.id.rbGovernorPowerBoost)).setChecked(true);

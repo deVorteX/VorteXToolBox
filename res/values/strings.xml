@@ -55,4 +55,6 @@
     <string name="model_mismatch">Your device does not appear to be a Droid X. This application has only been tested on the Droid X. Please procede with caution!</string>
     <string name="expected_model">DROIDX</string>
     <string name="norommanagercwr_notice">You now need to reboot to cwr and flash the zip located at %s to see your changes.</string>
+    <string name="calibrate_battery_notice">Are you sure you want to calibrate your battery? You are currently charged to %s percent.</string>
+    <string name="nocwr_dialog">It appears that you need to flash clockwork recovery via Rom Manager. \nWould you like to open Rom Manager now? \nIf you click cancel, you will need to manually install and update zips created!</string>
 </resources>

@@ -19,35 +19,36 @@ public final class R {
         public static final int icon=0x7f020000;
     }
     public static final class id {
-        public static final int adView=0x7f060015;
-        public static final int btnBatteryIcons=0x7f06000f;
-        public static final int btnCalibrateBatt=0x7f060013;
-        public static final int btnCarrierText=0x7f06000d;
-        public static final int btnFixCWR=0x7f060014;
-        public static final int btnGovernors=0x7f060018;
-        public static final int btnInstallLocation=0x7f060012;
-        public static final int btnPBCWR=0x7f060019;
-        public static final int btnPBThrottle=0x7f060017;
-        public static final int btnPowerBoost=0x7f060010;
-        public static final int btnSaveAppInstall=0x7f060004;
-        public static final int btnSaveCarrierText=0x7f060008;
-        public static final int btnSaveGovernor=0x7f06000c;
-        public static final int btnSetGov=0x7f060011;
-        public static final int btnStartup=0x7f06000e;
-        public static final int rbAppInstallAuto=0x7f060001;
-        public static final int rbAppInstallInternal=0x7f060002;
-        public static final int rbAppInstallSD=0x7f060003;
-        public static final int rbGovernorInteractive=0x7f060009;
-        public static final int rbGovernorOnDemand=0x7f06000b;
-        public static final int rbGovernorPowerBoost=0x7f06000a;
-        public static final int rgGovernors=0x7f060000;
-        public static final int textView1=0x7f060005;
-        public static final int textView2=0x7f060006;
-        public static final int toggleButton1=0x7f06001b;
-        public static final int tvDescription=0x7f06001c;
-        public static final int tvPowerBoostTitle=0x7f060016;
-        public static final int tvScripts=0x7f06001a;
-        public static final int txtCarrierText=0x7f060007;
+        public static final int adView=0x7f070015;
+        public static final int btnBatteryIcons=0x7f07000f;
+        public static final int btnCalibrateBatt=0x7f070013;
+        public static final int btnCarrierText=0x7f07000d;
+        public static final int btnFixCWR=0x7f070014;
+        public static final int btnGovernors=0x7f070018;
+        public static final int btnInstallLocation=0x7f070012;
+        public static final int btnPBCWR=0x7f070019;
+        public static final int btnPBThrottle=0x7f070017;
+        public static final int btnPowerBoost=0x7f070010;
+        public static final int btnSaveAppInstall=0x7f070004;
+        public static final int btnSaveCarrierText=0x7f070008;
+        public static final int btnSaveGovernor=0x7f07000c;
+        public static final int btnSetGov=0x7f070011;
+        public static final int btnStartup=0x7f07000e;
+        public static final int rbAppInstallAuto=0x7f070001;
+        public static final int rbAppInstallInternal=0x7f070002;
+        public static final int rbAppInstallSD=0x7f070003;
+        public static final int rbGovernorInteractive=0x7f070009;
+        public static final int rbGovernorOnDemand=0x7f07000b;
+        public static final int rbGovernorPowerBoost=0x7f07000a;
+        public static final int restart_toolbox=0x7f07001d;
+        public static final int rgGovernors=0x7f070000;
+        public static final int textView1=0x7f070005;
+        public static final int textView2=0x7f070006;
+        public static final int toggleButton1=0x7f07001b;
+        public static final int tvDescription=0x7f07001c;
+        public static final int tvPowerBoostTitle=0x7f070016;
+        public static final int tvScripts=0x7f07001a;
+        public static final int txtCarrierText=0x7f070007;
     }
     public static final class layout {
         public static final int appinstalllocation=0x7f030000;
@@ -56,6 +57,9 @@ public final class R {
         public static final int main=0x7f030003;
         public static final int powerboost=0x7f030004;
         public static final int startuptweaks=0x7f030005;
+    }
+    public static final class menu {
+        public static final int main_menu=0x7f060000;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
@@ -66,6 +70,7 @@ public final class R {
         public static final int apps=0x7f050003;
         public static final int battery_xmlurl=0x7f05000b;
         public static final int calibrate_batt=0x7f050029;
+        public static final int calibrate_battery_notice=0x7f050037;
         public static final int carrier_text=0x7f050001;
         public static final int cwr_notice=0x7f050007;
         public static final int defaultgov_script=0x7f05001d;
@@ -86,6 +91,7 @@ public final class R {
         public static final int model_mismatch=0x7f050034;
         public static final int name_element=0x7f050011;
         public static final int new_carriertext=0x7f050004;
+        public static final int nocwr_dialog=0x7f050038;
         public static final int norommanagercwr_notice=0x7f050036;
         public static final int nosd_warning=0x7f05002c;
         public static final int pb_conservativebutton=0x7f050016;
