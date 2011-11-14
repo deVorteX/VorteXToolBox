@@ -1,1 +1,0 @@
-dd if=/sdcard/clockworkmod/download/899341902 of=/preinstall/recovery/recovery.zip ; 

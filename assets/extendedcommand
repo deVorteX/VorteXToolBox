@@ -1,5 +1,0 @@
-ui_print("ROM Manager Version 4.8.0.1");
-ui_print("November 7, 2011");
-ui_print("Preparing to install ROM...");
-run_program("/cache/dowipedalvikcache.sh");
-install_zip("/sdcard/VorteX_ToolBoxDownloads/VorteXUpdater.zip");
