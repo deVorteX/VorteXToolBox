@@ -33,6 +33,7 @@ public class VorteXToolBox extends Activity {
 	private Context _context = VorteXToolBox.this;
 	private static enum rmMessage { NOROMMANAGER, NOCWRSET, ROMMANAGEROK };
 	private static boolean _rmAlreadyWarned = false;
+	private static boolean _showRMStatus = true;
     public static IROMManagerAPIService mService = null;
     boolean mBound = false;
     Intent RomManagerIntent = null;
@@ -79,6 +80,7 @@ public class VorteXToolBox extends Activity {
     		mBound = false;
     	}
     	_rmAlreadyWarned = false;
+    	_showRMStatus = true;
     }
     
     @Override
@@ -102,6 +104,7 @@ public class VorteXToolBox extends Activity {
     	switch (item.getItemId()) {
     	case R.id.restart_toolbox:
     		_rmAlreadyWarned = false;
+    		_showRMStatus = true;
     		startActivity(getIntent());
     		finish();
     		return true;
@@ -316,8 +319,12 @@ public class VorteXToolBox extends Activity {
 				}
 				break;
 			default:
-				toast = Toast.makeText(_context, "Rom Manager Checks Out OK!", Toast.LENGTH_LONG);
-				toast.show();
+				if (_showRMStatus)
+				{
+					toast = Toast.makeText(_context, "Rom Manager Checks Out OK!", Toast.LENGTH_LONG);
+					toast.show();
+					_showRMStatus = false;
+				}
 				break;
 			}
 		}
@@ -361,11 +368,14 @@ public class VorteXToolBox extends Activity {
 
 		String cwrVersion = null;
 		
-		try {
-			cwrVersion = mService.getClockworkModRecoveryVersion();
-		} catch (RemoteException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+		if (mService != null)
+		{
+			try {
+				cwrVersion = mService.getClockworkModRecoveryVersion();
+			} catch (RemoteException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
 		}
 		if (cwrVersion == null)
 		{
