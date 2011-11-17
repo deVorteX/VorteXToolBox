@@ -7,39 +7,88 @@
     	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     	android:orientation="vertical"
     	android:weightSum="1" android:layout_height="match_parent" android:layout_width="match_parent">
-	    <Button android:layout_width="match_parent" android:text="@string/carrier_text" android:textSize="12.0dp" android:textStyle="bold" android:id="@+id/btnCarrierText" android:clickable="true" android:layout_height="wrap_content"></Button>
-	    <Button android:layout_width="match_parent" android:text="@string/startup" android:textSize="12.0dp" android:textStyle="bold" android:id="@+id/btnStartup" android:layout_height="wrap_content"></Button>
-	    <Button android:layout_height="wrap_content" android:layout_width="match_parent" android:textSize="12.0dp" android:id="@+id/btnBatteryIcons" android:text="Change Battery Icons" android:textStyle="bold"></Button>
+
+    	<TextView
+    	    android:id="@+id/Customizations"
+    	    style="?android:attr/listSeparatorTextViewStyle"
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="22dp"
+    	    android:gravity="left"
+    	    android:text="Customizations" />
+    	    
+	    <Button 
+	        android:layout_width="match_parent" 
+	        android:text="@string/carrier_text" 
+	        android:textStyle="bold" 
+	        android:id="@+id/btnCarrierText" 
+	        android:clickable="true" 
+	        android:layout_height="wrap_content" />
+
+	    <Button
+	        android:id="@+id/btnBatteryIcons"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="Change Battery Icons"
+	        android:textStyle="bold" />
 	
+	    <TextView
+	        android:id="@+id/SystemTweaks"
+	        style="?android:attr/listSeparatorTextViewStyle"
+	        android:layout_width="fill_parent"
+	        android:layout_height="22dp"
+	        android:gravity="left"
+	        android:text="System Tweaks" />
+
+	    <Button
+	        android:id="@+id/btnVorteXStartup"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/startup"
+	        android:textStyle="bold" />
+	        
 	    <Button
 	        android:id="@+id/btnPowerBoost"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:text="@string/powerboost" android:textSize="12.0dp" android:textStyle="bold"/>
+	        android:text="@string/powerboost" 
+	        android:textStyle="bold"/>
 	    
 	    <Button
 	        android:id="@+id/btnSetGov"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:text="@string/setgov" android:textSize="12.0dp" android:textStyle="bold"/>
+	        android:text="@string/setgov" 
+	        android:textStyle="bold"/>
 	
 	    <Button
 	        android:id="@+id/btnInstallLocation"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:text="@string/install_location" android:textSize="12.0dp" android:textStyle="bold"/>
+	        android:text="@string/install_location" 
+	        android:textStyle="bold"/>
+	    
+	    <TextView
+	        android:id="@+id/Misc"
+	        style="?android:attr/listSeparatorTextViewStyle"
+	        android:layout_width="fill_parent"
+	        android:layout_height="22dp"
+	        android:gravity="left"
+	        android:text="Misc" />
 	    
 	    <Button
 	        android:id="@+id/btnCalibrateBatt"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:text="@string/calibrate_batt" android:textSize="12.0dp" android:textStyle="bold"/>
+	        android:text="@string/calibrate_batt" 
+	        android:textStyle="bold"/>
 	    
 	    <Button
 	        android:id="@+id/btnFixCWR"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:text="@string/fix_recovery" android:textSize="12.0dp" android:textStyle="bold"/>
+	        android:text="@string/fix_recovery" 
+	        android:textStyle="bold"/>
+	    
     </LinearLayout>
     </ScrollView>
     
@@ -49,6 +98,6 @@
                          ads:adUnitId="a14ebd66bc8c512"
                          ads:adSize="BANNER"
                          ads:loadAdOnCreate="true"
-                         android:layout_alignParentBottom="true"/>
+                         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

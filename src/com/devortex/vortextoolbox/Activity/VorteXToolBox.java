@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -19,7 +20,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devortex.vortextoolbox.*;
@@ -121,12 +124,23 @@ public class VorteXToolBox extends Activity {
 	    bindService(RomManagerIntent, mConnection, Context.BIND_AUTO_CREATE);
 	    
     	Assests.unzipAssets(_context);
+    	
+    	boolean setCustomTitle = requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		        
         setContentView(R.layout.main);
         
+        if (setCustomTitle)
+        {
+			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
+			final TextView myTitleText = (TextView) findViewById(R.id.myTitle);
+	        if ( myTitleText != null ) {
+	            myTitleText.setText(getTitle(_context));
+	        }
+        }
+        
         Button mChangeCarrierTextButton = (Button) findViewById(R.id.btnCarrierText);
         Button mOnePercentButton = (Button) findViewById(R.id.btnBatteryIcons);
-        Button mStartupTweaks = (Button) findViewById(R.id.btnStartup);
+        Button mStartupTweaks = (Button) findViewById(R.id.btnVorteXStartup);
         Button mPowerBoost = (Button) findViewById(R.id.btnPowerBoost);
         Button mCalibrateBatt = (Button) findViewById(R.id.btnCalibrateBatt);
         Button mFixRecovery = (Button) findViewById(R.id.btnFixCWR);
@@ -220,6 +234,20 @@ public class VorteXToolBox extends Activity {
 	{
 		Intent i = new Intent(this, AppInstallLocation.class);
 		startActivity(i);
+	}
+	
+	public static String getTitle(Context context)
+	{
+		String app_ver = null;
+		try
+		{
+		    app_ver = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+		}
+		catch (NameNotFoundException e)
+		{
+		    
+		}
+		return String.format("%s: %s", context.getString(R.string.app_name), app_ver);
 	}
 	
 	protected void calibrateBattery()
