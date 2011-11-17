@@ -33,10 +33,10 @@ public class VorteXToolBox extends Activity {
 	public static final String PREF_FILE_NAME = "vortextoolbox";
 	public static final String PREF_SHOW_MODEL_WARNING = "showDeviceWarning";
 	public static final String PREF_CWR_INSTALLED = "rommanagerInstalled";
+	public StateSaver ss;
 	private Context _context = VorteXToolBox.this;
 	private static enum rmMessage { NOROMMANAGER, NOCWRSET, ROMMANAGEROK };
-	private static boolean _rmAlreadyWarned = false;
-	private static boolean _showRMStatus = true;
+	
     public static IROMManagerAPIService mService = null;
     boolean mBound = false;
     Intent RomManagerIntent = null;
@@ -82,8 +82,6 @@ public class VorteXToolBox extends Activity {
     		unbindService(mConnection);
     		mBound = false;
     	}
-    	_rmAlreadyWarned = false;
-    	_showRMStatus = true;
     }
     
     @Override
@@ -106,8 +104,8 @@ public class VorteXToolBox extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
     	case R.id.restart_toolbox:
-    		_rmAlreadyWarned = false;
-    		_showRMStatus = true;
+    		ss.setRMAlreadyWarned(false);
+    		ss.setShowRMStatus(true);
     		startActivity(getIntent());
     		finish();
     		return true;
@@ -119,6 +117,8 @@ public class VorteXToolBox extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
+    	
+    	ss = ((StateSaver)getApplicationContext());
     	
     	RomManagerIntent = new Intent("com.koushikdutta.rommanager.api.BIND");
 	    bindService(RomManagerIntent, mConnection, Context.BIND_AUTO_CREATE);
@@ -315,7 +315,7 @@ public class VorteXToolBox extends Activity {
 				toast.show();
 				break;
 			case NOCWRSET:
-				if (!_rmAlreadyWarned)
+				if (!ss.getRMAlreadyWarned())
 				{
 					AlertDialog.Builder builder = new AlertDialog.Builder(_context);
 			 	   	builder.setMessage(R.string.nocwr_dialog)
@@ -338,7 +338,7 @@ public class VorteXToolBox extends Activity {
 			 	          	});
 			 	   	AlertDialog alert = builder.create();
 			 	   	alert.show();
-			 	   	_rmAlreadyWarned = true;
+			 	   ss.setRMAlreadyWarned(true);
 				}
 				else
 				{
@@ -347,11 +347,12 @@ public class VorteXToolBox extends Activity {
 				}
 				break;
 			default:
-				if (_showRMStatus)
+				if (ss.getShowRMStatus())
 				{
 					toast = Toast.makeText(_context, "Rom Manager Checks Out OK!", Toast.LENGTH_LONG);
 					toast.show();
-					_showRMStatus = false;
+					ss.setShowRMStatus(false);
+					//((StateSaver)getApplication()).setShowRMStatus(false);
 				}
 				break;
 			}
