@@ -74,11 +74,15 @@ public class AppInstallLocation extends Activity{
 	{
 		String line = commandRunner.retrieveSingleCommandLineReturnLine("pm getInstallLocation");
 				
-		if (line.equalsIgnoreCase("1[internal]"))
-        	((RadioButton) findViewById(R.id.rbAppInstallInternal)).setChecked(true);
-		else if (line.equalsIgnoreCase("0[auto]"))
-        	((RadioButton) findViewById(R.id.rbAppInstallAuto)).setChecked(true);
+		if (line != null) {
+			if (line.equalsIgnoreCase("1[internal]"))
+	        	((RadioButton) findViewById(R.id.rbAppInstallInternal)).setChecked(true);
+			else if (line.equalsIgnoreCase("0[auto]"))
+	        	((RadioButton) findViewById(R.id.rbAppInstallAuto)).setChecked(true);
+			else
+	        	((RadioButton) findViewById(R.id.rbAppInstallSD)).setChecked(true);
+		}
 		else
-        	((RadioButton) findViewById(R.id.rbAppInstallSD)).setChecked(true);
+			((RadioButton) findViewById(R.id.rbAppInstallAuto)).setChecked(true);
 	}
 }

@@ -72,12 +72,15 @@ public class Governors extends Activity{
 	protected void SetInnitialChoice()
 	{
 		String line = commandRunner.retrieveSingleCommandLineReturnLine("cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor");
-		
-		if (line.equalsIgnoreCase("conservative"))
-        	((RadioButton) findViewById(R.id.rbGovernorPowerBoost)).setChecked(true);
-		else if (line.equalsIgnoreCase("interactive"))
-        	((RadioButton) findViewById(R.id.rbGovernorInteractive)).setChecked(true);
+		if (line != null) {
+			if (line.equalsIgnoreCase("conservative"))
+	        	((RadioButton) findViewById(R.id.rbGovernorPowerBoost)).setChecked(true);
+			else if (line.equalsIgnoreCase("interactive"))
+	        	((RadioButton) findViewById(R.id.rbGovernorInteractive)).setChecked(true);
+			else
+	        	((RadioButton) findViewById(R.id.rbGovernorOnDemand)).setChecked(true);
+		}
 		else
-        	((RadioButton) findViewById(R.id.rbGovernorOnDemand)).setChecked(true);
+			((RadioButton) findViewById(R.id.rbGovernorOnDemand)).setChecked(true);
 	}
 }
