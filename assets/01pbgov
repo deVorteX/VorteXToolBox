@@ -2,7 +2,6 @@
 
 
 # enable modified Conservative governor by default
-busybox mount -o remount,rw /system
 insmod /system/lib/modules/symsearch.ko
 insmod /system/lib/modules/cpufreq_conservative.ko 
 insmod /system/lib/modules/cpufreq_interactive.ko
