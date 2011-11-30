@@ -68,6 +68,21 @@
 	        android:textStyle="bold"/>
 	    
 	    <TextView
+	        android:id="@+id/Applications"
+	        style="?android:attr/listSeparatorTextViewStyle"
+	        android:layout_width="fill_parent"
+	        android:layout_height="22dp"
+	        android:gravity="left"
+	        android:text="Apps" />
+	    
+	    <Button
+	        android:id="@+id/btnSwapApps"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/swap_apps" 
+	        android:textStyle="bold"/>
+	    
+	    <TextView
 	        android:id="@+id/Misc"
 	        style="?android:attr/listSeparatorTextViewStyle"
 	        android:layout_width="fill_parent"

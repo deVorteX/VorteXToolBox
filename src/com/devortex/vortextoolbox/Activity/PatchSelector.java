@@ -16,29 +16,28 @@ import com.devortex.vortextoolbox.R;
 import com.devortex.vortextoolbox.helper.*;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-public class BatteryIconSelector extends Activity implements OnClickListener {
+public class PatchSelector extends Activity implements OnClickListener {
 	private ProgressDialog pd;
 	private XMLHandler myHandler;
 	private LinearLayout ll;
 	private ScrollView sv;
 	private String _fileName;
 	private Thread _thread;
-	private Context _context = BatteryIconSelector.this;
+	private Context _context = PatchSelector.this;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,15 +82,15 @@ public class BatteryIconSelector extends Activity implements OnClickListener {
 			e2.printStackTrace();
 		}
         myHandler = new XMLHandler(
-        		context.getString(R.string.icon_start_element), 
-        		context.getString(R.string.icon_download_attribute), 
-        		context.getString(R.string.icon_image_url_element), 
-        		context.getString(R.string.icon_name_element)
+        		context.getString(R.string.patch_start_element), 
+        		context.getString(R.string.patch_download_attribute), 
+        		"", 
+        		context.getString(R.string.patch_name_element)
         		);
         xr.setContentHandler(myHandler);
         URL iconListUrl = null;
 		try {
-			iconListUrl = new URL(getString(R.string.battery_xmlurl));
+			iconListUrl = new URL(getString(R.string.patch_xmlurl));
 		} catch (MalformedURLException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
@@ -116,22 +115,7 @@ public class BatteryIconSelector extends Activity implements OnClickListener {
 		
 		for (int i = 0; i < iconsList.size(); i++)
 		{
-	        URL iconUrl = null;
-			try {
-				iconUrl = new URL(iconsList.get(i).getImageURL());
-			} catch (MalformedURLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	        Bitmap mIcon_val = null;
-			try {
-				mIcon_val = BitmapFactory.decodeStream(iconUrl.openConnection().getInputStream());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			URL iconSetZipURL = null;
+	        URL iconSetZipURL = null;
 			try {
 				iconSetZipURL = new URL(iconsList.get(i).getDownloadURL());
 			} catch (MalformedURLException e1) {
@@ -139,11 +123,6 @@ public class BatteryIconSelector extends Activity implements OnClickListener {
 				e1.printStackTrace();
 			}	        
 			
-		        ImageView iv = new ImageView(this);
-		        iv.setImageBitmap(mIcon_val);
-		        
-		        ll.addView(iv);
-		        
 		        Button b = new Button(this);
 				b.setText("Install " + iconsList.get(i).getName() + "...");
 				b.setTag(iconSetZipURL);
@@ -154,9 +133,9 @@ public class BatteryIconSelector extends Activity implements OnClickListener {
         this.setContentView(sv);
 	}
 	
-	protected void startBatterySwap(final URL downloadUrl) throws IOException, InterruptedException
+	protected void startPatch(final URL downloadUrl) throws IOException, InterruptedException
 	{
-		pd = ProgressDialog.show(_context, "Downloading...", "Downloading Icons", true, false);
+		pd = ProgressDialog.show(_context, "Downloading...", "Downloading Patch", true, false);
 		_thread = new Thread()
 		{
 			public void run() {
@@ -182,11 +161,11 @@ public class BatteryIconSelector extends Activity implements OnClickListener {
 	
 	protected void startMod() throws InterruptedException
 	{
-		pd = ProgressDialog.show(_context, "Preparing...", "Preparing Mod", true, false);
+		pd = ProgressDialog.show(_context, "Preparing...", "Preparing Patch", true, false);
 		_thread = new Thread() {
 			public void run() {
 				try {
-					commandRunner.swapBatteryIcons(_context, _fileName);
+					commandRunner.installPatch(_context, _fileName);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -225,7 +204,17 @@ public class BatteryIconSelector extends Activity implements OnClickListener {
 		@Override
 		public void handleMessage(Message msg) {
 			pd.dismiss();
-			commandRunner.cwrDialog(_context);
+			AlertDialog.Builder builder = new AlertDialog.Builder(_context);
+			builder.setMessage("Patch Installed")
+				.setCancelable(false)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						((Activity)_context).finish();
+					}
+				});
+			AlertDialog alert = builder.create();
+		 	alert.show();
 		}
 	};
 	
@@ -240,7 +229,7 @@ public class BatteryIconSelector extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		URL url = (URL)v.getTag();
 		try {
-			startBatterySwap(url);
+			startPatch(url);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

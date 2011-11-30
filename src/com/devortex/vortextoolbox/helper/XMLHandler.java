@@ -5,17 +5,12 @@ import java.util.ArrayList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
-import android.content.Context;
-
-import com.devortex.vortextoolbox.R;
  
  
 public class XMLHandler extends DefaultHandler{
  
 	Boolean currentElement = false;
 	String currentValue = null;
-	private Context _context;
 	private String sStartElement;
 	private String sDownloadAttribute;
 	private String sImageUrlElement;
@@ -23,15 +18,14 @@ public class XMLHandler extends DefaultHandler{
 	private ArrayList<IconsList> iconsListArray;
 	private IconsList iconsList;
 
-	public XMLHandler(Context context)
+	public XMLHandler(String startElement, String downloadAttribute, String imageURLElement, String nameElement)
 	{
-		_context = context;
 		iconsList = new IconsList();
 		iconsListArray = new ArrayList<IconsList>();
-		sStartElement = _context.getString(R.string.start_element);
-		sDownloadAttribute = _context.getString(R.string.download_attribute);
-		sImageUrlElement = _context.getString(R.string.image_url_element);
-		sNameElement = _context.getString(R.string.name_element);
+		sStartElement = startElement;
+		sDownloadAttribute = downloadAttribute;
+		sImageUrlElement = imageURLElement;
+		sNameElement = nameElement;
 	}
 	
 	public ArrayList<IconsList> getIconsList() {

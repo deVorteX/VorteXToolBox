@@ -138,6 +138,30 @@ public class commandRunner {
 		DeleteRecursive(workingDir);
 	}
 	
+	public static void installPatch(Context context, String fileName) throws InterruptedException, IOException
+	{
+		File workingDir = new File(context.getFilesDir().getAbsolutePath() + "/tmp");
+		if (!workingDir.exists())
+		{
+			workingDir.mkdirs();
+		}
+		else
+		{
+			DeleteRecursive(workingDir);
+			workingDir.mkdirs();
+		}
+		
+		ZipUtils.UnZip(workingDir, fileName);
+		
+		Command cmd = new Command();
+		cmd.Add("cd " + workingDir.getAbsolutePath());
+		cmd.Add("sh installpatch.sh");
+		
+		commandRunner.runSuCommand(context, cmd.get()).waitFor();
+		
+		DeleteRecursive(workingDir);
+	}
+	
 	public static void swapBatteryIcons(Context context, String fileName) throws IOException, InterruptedException
 	{
 		File workingDir = new File(context.getFilesDir().getAbsolutePath() + "/tmp");
