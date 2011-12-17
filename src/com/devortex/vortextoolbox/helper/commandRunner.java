@@ -323,7 +323,7 @@ public class commandRunner {
 	public static void cwrDialog(final Context context)
 	{
 		String updateZip = "/" + context.getString(R.string.app_name).replace(' ', '_') + "Downloads/" + context.getString(R.string.zipupdate_name);
-		final String updateZipPath = Environment.getExternalStorageDirectory() + updateZip;
+		final String updateZipPath = Environment.getExternalStorageDirectory().toString().replace("/mnt", "") + updateZip;
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		if (((Activity)context).getSharedPreferences(VorteXToolBox.PREF_FILE_NAME, Context.MODE_PRIVATE).getBoolean(VorteXToolBox.PREF_CWR_INSTALLED, true))
 		{		
